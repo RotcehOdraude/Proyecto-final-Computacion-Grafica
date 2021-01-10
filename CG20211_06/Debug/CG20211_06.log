@@ -1,0 +1,10 @@
+﻿  main_prac12.cpp
+c:\users\hecto\desktop\cg20211_06\cg20211_06\include\shader_m.h(46): warning C4101: 'e': variable local sin referencia
+c:\users\hecto\desktop\cg20211_06\cg20211_06\main_prac12.cpp(656): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+c:\users\hecto\desktop\cg20211_06\cg20211_06\main_prac12.cpp(657): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+c:\users\hecto\desktop\cg20211_06\cg20211_06\main_prac12.cpp(661): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
+c:\users\hecto\desktop\cg20211_06\cg20211_06\main_prac12.cpp(662): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
+c:\users\hecto\desktop\cg20211_06\cg20211_06\main_prac12.cpp(664): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+c:\users\hecto\desktop\cg20211_06\cg20211_06\main_prac12.cpp(665): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+c:\users\hecto\desktop\cg20211_06\cg20211_06\main_prac12.cpp(673): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
+  CG20211_06.vcxproj -> C:\Users\hecto\Desktop\CG20211_06\Debug\CG20211_06.exe
