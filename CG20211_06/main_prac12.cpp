@@ -315,7 +315,7 @@ int main()
 	//Model casaVieja("resources/objects/casa/OldHouse.obj");
 	Model casaVieja("resources/objects/Escenario2/Escenario.obj");
 	Model cubo("resources/objects/cubo/cube02.obj");
-	Model casaDoll("resources/objects/casa/DollHouse.obj");
+	Model casaDoll("resources/objects/Marge/Marge3Low.obj");
 
 	ModelAnim animacionPersonaje("resources/objects/Personaje1/PersonajeBrazo.dae");
 	animacionPersonaje.initShaders(animShader.ID);
