@@ -37,8 +37,8 @@ void animate(void);
 void getResolution(void);
 
 // settings
-int SCR_WIDTH = 3800;
-int SCR_HEIGHT = 7600;
+int SCR_WIDTH = 800;
+int SCR_HEIGHT = 600;
 
 GLFWmonitor *monitors;
 
@@ -282,7 +282,7 @@ int main()
 	Shader staticShader("Shaders/shader_Lights.vs", "Shaders/shader_Lights.fs");
 	Shader skyboxShader("Shaders/skybox.vs", "Shaders/skybox.fs");
 	Shader animShader("Shaders/anim.vs", "Shaders/anim.fs");
-
+	
 	vector<std::string> faces
 	{
 		"resources/skybox/right.jpg",
@@ -304,12 +304,12 @@ int main()
 	// -----------
 	Model piso("resources/objects/piso/piso.obj");
 	Model botaDer("resources/objects/Personaje/bota.obj");
-	Model piernaDer("resources/objects/Personaje/piernader.obj");
-	Model piernaIzq("resources/objects/Personaje/piernader.obj");
-	Model torso("resources/objects/Personaje/torso.obj");
-	Model brazoDer("resources/objects/Personaje/brazoder.obj");
-	Model brazoIzq("resources/objects/Personaje/brazoizq.obj");
-	Model cabeza("resources/objects/Personaje/cabeza.obj");
+	Model piernaDer("resources/objects/PersonajeHomero/piernaDer.obj");
+	Model piernaIzq("resources/objects/PersonajeHomero/piernaIzq.obj");
+	Model torso("resources/objects/PersonajeHomero/torso.obj");
+	Model brazoDer("resources/objects/PersonajeHomero/brazoDer.obj");
+	Model brazoIzq("resources/objects/PersonajeHomero/brazoIzq.obj");
+	Model cabeza("resources/objects/PersonajeHomero/cabeza.obj");
 	Model carro("resources/objects/lambo/carroceria.obj");
 	Model llanta("resources/objects/lambo/Wheel.obj");
 	//Model casaVieja("resources/objects/casa/OldHouse.obj");
@@ -483,6 +483,7 @@ int main()
 		// Personaje
 		// -------------------------------------------------------------------------------------------------------------------------
 		model = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0));
+		model = glm::scale(model, glm::vec3(5.0f));
 		model = glm::translate(model, glm::vec3(posX, posY, posZ));
 		tmp = model = glm::rotate(model, glm::radians(giroMonito), glm::vec3(0.0f, 1.0f, 0.0));
 		staticShader.setMat4("model", model);
