@@ -12,9 +12,11 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <time.h>
 
-
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>	//Texture
+
+// OpenAL
+#include <AL/alut.h>
 
 #define SDL_MAIN_HANDLED
 #include <SDL/SDL.h>
@@ -23,8 +25,15 @@
 #include <camera.h>
 #include <modelAnim.h>
 #include <model.h>
+
 #include <Skybox.h>
 #include <iostream>
+
+/*------------------------------OpenAL-------------------------------------*/
+#define FILENAME "resources/audio/TheSimpsons.wav"
+ALuint buffer, source;
+/*--------------------------------------------------------------------------*/
+
 
 //#pragma comment(lib, "winmm.lib")
 
@@ -49,6 +58,11 @@ float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
 
+
+
+float dx_Homero = 0.08f, dz_Homero = 0.08f, giroHomero = 0.0f, mov_giro = 0.07f;
+
+
 // timing
 const int FPS = 60;
 const int LOOP_TIME = 1000 / FPS; // = 16 milisec // 1000 millisec == 1 sec
@@ -64,12 +78,16 @@ glm::vec3 lightDirection(0.2f, -1.0f, -0.2f);
 //float y = 0.0f;
 float	movAuto_x = 0.0f,
 		movAuto_z = 0.0f,
-		orienta = 0.0f;
+		orienta = 0.0f,
+		homero_x = 0.0f,
+		homero_z = 0.0f;
+
 bool	animacion = false,
 		recorrido1 = true,
 		recorrido2 = false,
 		recorrido3 = false,
-		recorrido4 = false;
+		recorrido4 = false,
+		direccionH = true;
 
 
 //Keyframes (Manipulación y dibujo)
@@ -219,6 +237,27 @@ void animate(void)
 			}
 		}
 	}
+
+	//-----------------------------Homero animación-----------------------------------
+	if (homero_x  >=  35.0f || homero_x <= -50.0f) {
+		dx_Homero = -dx_Homero;
+		direccionH = -direccionH;
+	}
+
+	if (homero_z  >= 100.0f || homero_z <= -47.0f) {
+		dz_Homero = -dz_Homero;
+		direccionH = -direccionH;
+	}
+
+	if (direccionH)
+		giroHomero += mov_giro;
+	else
+		giroHomero -= mov_giro;
+
+	homero_x += dx_Homero;
+	homero_z += dz_Homero;
+	//--------------------------------------------------------------------------------
+	
 }
 void getResolution()
 {
@@ -313,7 +352,7 @@ int main()
 	Model casaVieja("resources/objects/Escenario2/Escenario.obj");
 	Model cubo("resources/objects/cubo/cube02.obj");
 	Model LUZ("resources/objects/LUZ/LUZ.obj");
-	
+	Model homeroDona("resources/objects/HomeroAlberca/HomeroALow.obj");
 
 	//ModelAnim animacionPersonaje("resources/objects/Personaje1/PersonajeBrazo.dae");
 	//animacionPersonaje.initShaders(animShader.ID);
@@ -336,8 +375,47 @@ int main()
 
 	// render loop
 	// -----------
+	/*------------------------------OpenAL-------------------------------------*/
+	// OpenAL init
+
+
+	ALint state;
+
+	// Initialize the environment
+	alutInit(0, NULL);
+
+	// Capture errors
+	alGetError();
+
+	// Load pcm data into buffer
+	buffer = alutCreateBufferFromFile(FILENAME);
+
+	// Create sound source (use buffer to fill source)
+	alGenSources(1, &source);
+	alSourcei(source, AL_BUFFER, buffer);
+
+	// Play
+	alSourcePlay(source);
+
+	// Wait for the song to complete
+	//do {
+	//	alGetSourcei(source, AL_SOURCE_STATE, &state);
+	//} while (state == AL_PLAYING);
+
+
+	/*-------------------------------------------------------------------------*/
+
+
+
+
+
+
+	
+	
+	
 	while (!glfwWindowShouldClose(window))
 	{
+
 		skyboxShader.setInt("skybox", 0);
 		
 		// per-frame time logic
@@ -513,14 +591,22 @@ int main()
 		staticShader.setMat4("view", view);
 
 
-		
-
 		model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f));
 		staticShader.setMat4("model", model);
 		casaVieja.Draw(staticShader);
 		// -------------------------------------------------------------------------------------------------------------------------
-		// Luz
+		// Homero
+		// -------------------------------------------------------------------------------------------------------------------------
+		
+		model = glm::rotate(glm::mat4(1.0f), glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(-190.0f + homero_x, 6.0f, 410.0f + homero_z));
+		model = glm::rotate(model, glm::radians(giroHomero), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(5.0f));
+		staticShader.setMat4("model", model);
+		homeroDona.Draw(staticShader);
+		// -------------------------------------------------------------------------------------------------------------------------
+		// Carro
 		// -------------------------------------------------------------------------------------------------------------------------
 		model = glm::translate(glm::mat4(1.0f), glm::vec3(lightPosition.x, lightPosition.y, lightPosition.z));
 		model = glm::scale(model, glm::vec3(5.0f));
@@ -614,9 +700,21 @@ int main()
 		glfwPollEvents();
 	}
 
+
+
+
 	skybox.Terminate();
 
 	glfwTerminate();
+
+	// Clean up sources and buffers
+	alDeleteSources(1, &source);
+	alDeleteBuffers(1, &buffer);
+
+	// Exit everything
+	//alutExit();
+
+
 	return 0;
 }
 
