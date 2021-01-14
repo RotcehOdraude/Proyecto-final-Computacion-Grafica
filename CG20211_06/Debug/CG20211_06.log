@@ -1,10 +1,12 @@
 ﻿  main_prac12.cpp
-c:\users\hecto\desktop\proyecto-final-computacion-grafica\cg20211_06\include\shader_m.h(46): warning C4101: 'e': variable local sin referencia
-c:\users\hecto\desktop\proyecto-final-computacion-grafica\cg20211_06\main_prac12.cpp(657): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
-c:\users\hecto\desktop\proyecto-final-computacion-grafica\cg20211_06\main_prac12.cpp(658): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
-c:\users\hecto\desktop\proyecto-final-computacion-grafica\cg20211_06\main_prac12.cpp(662): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
-c:\users\hecto\desktop\proyecto-final-computacion-grafica\cg20211_06\main_prac12.cpp(663): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
-c:\users\hecto\desktop\proyecto-final-computacion-grafica\cg20211_06\main_prac12.cpp(665): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
-c:\users\hecto\desktop\proyecto-final-computacion-grafica\cg20211_06\main_prac12.cpp(666): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
-c:\users\hecto\desktop\proyecto-final-computacion-grafica\cg20211_06\main_prac12.cpp(674): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
-  CG20211_06.vcxproj -> C:\Users\hecto\Desktop\Proyecto-final-Computacion-Grafica\Debug\CG20211_06.exe
+c:\users\narut\desktop\proyecto-final-computacion-grafica\cg20211_06\include\shader_m.h(46): warning C4101: 'e': variable local sin referencia
+c:\users\narut\desktop\proyecto-final-computacion-grafica\cg20211_06\main_prac12.cpp(235): warning C4804: '-': uso no seguro del tipo 'bool' en la operación
+c:\users\narut\desktop\proyecto-final-computacion-grafica\cg20211_06\main_prac12.cpp(240): warning C4804: '-': uso no seguro del tipo 'bool' en la operación
+c:\users\narut\desktop\proyecto-final-computacion-grafica\cg20211_06\main_prac12.cpp(702): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+c:\users\narut\desktop\proyecto-final-computacion-grafica\cg20211_06\main_prac12.cpp(703): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+c:\users\narut\desktop\proyecto-final-computacion-grafica\cg20211_06\main_prac12.cpp(707): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
+c:\users\narut\desktop\proyecto-final-computacion-grafica\cg20211_06\main_prac12.cpp(708): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
+c:\users\narut\desktop\proyecto-final-computacion-grafica\cg20211_06\main_prac12.cpp(710): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+c:\users\narut\desktop\proyecto-final-computacion-grafica\cg20211_06\main_prac12.cpp(711): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+c:\users\narut\desktop\proyecto-final-computacion-grafica\cg20211_06\main_prac12.cpp(719): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
+  CG20211_06.vcxproj -> C:\Users\narut\Desktop\Proyecto-final-Computacion-Grafica\Debug\CG20211_06.exe

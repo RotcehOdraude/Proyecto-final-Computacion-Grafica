@@ -49,6 +49,11 @@ float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
 
+
+
+float dx_Homero = 0.08f, dz_Homero = 0.08f, giroHomero = 0.0f, mov_giro = 0.07f;
+
+
 // timing
 const int FPS = 60;
 const int LOOP_TIME = 1000 / FPS; // = 16 milisec // 1000 millisec == 1 sec
@@ -64,12 +69,16 @@ glm::vec3 lightDirection(0.0f, -1.0f, -1.0f);
 //float y = 0.0f;
 float	movAuto_x = 0.0f,
 		movAuto_z = 0.0f,
-		orienta = 0.0f;
+		orienta = 0.0f,
+		homero_x = 0.0f,
+		homero_z = 0.0f;
+
 bool	animacion = false,
 		recorrido1 = true,
 		recorrido2 = false,
 		recorrido3 = false,
-		recorrido4 = false;
+		recorrido4 = false,
+		direccionH = true;
 
 
 //Keyframes (Manipulación y dibujo)
@@ -219,6 +228,27 @@ void animate(void)
 			}
 		}
 	}
+
+	
+	if (homero_x  >=  35.0f || homero_x <= -50.0f) {
+		dx_Homero = -dx_Homero;
+		direccionH = -direccionH;
+	}
+
+	if (homero_z  >= 100.0f || homero_z <= -47.0f) {
+		dz_Homero = -dz_Homero;
+		direccionH = -direccionH;
+	}
+
+	if (direccionH)
+		giroHomero += mov_giro;
+	else
+		giroHomero -= mov_giro;
+
+	homero_x += dx_Homero;
+	homero_z += dz_Homero;
+	
+	
 }
 void getResolution()
 {
@@ -316,6 +346,7 @@ int main()
 	Model casaVieja("resources/objects/Escenario2/Escenario.obj");
 	Model cubo("resources/objects/cubo/cube02.obj");
 	Model casaDoll("resources/objects/Marge/Marge3Low.obj");
+	Model homeroDona("resources/objects/HomeroAlberca/HomeroALow.obj");
 
 	ModelAnim animacionPersonaje("resources/objects/Personaje1/PersonajeBrazo.dae");
 	animacionPersonaje.initShaders(animShader.ID);
@@ -441,12 +472,26 @@ int main()
 		staticShader.setMat4("model", model);
 		casaDoll.Draw(staticShader);
 
-		
-
 		model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f));
 		staticShader.setMat4("model", model);
 		casaVieja.Draw(staticShader);
+
+		// -------------------------------------------------------------------------------------------------------------------------
+		// Homero
+		// -------------------------------------------------------------------------------------------------------------------------
+		
+		//model = glm::translate(glm::mat4(1.0f), glm::vec3(20.0f + homero_x, -7.0f, 50.0f + homero_z));
+		//model = glm::rotate(glm::mat4(1.0f), glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(glm::mat4(1.0f), glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(-190.0f + homero_x, 6.0f, 410.0f + homero_z));
+		model = glm::rotate(model, glm::radians(giroHomero), glm::vec3(0.0f, 1.0f, 0.0f));
+		//model = glm::translate(tmp, glm::vec3(5.0f ,0.0f, 5.0f));
+		model = glm::scale(model, glm::vec3(5.0f));
+		//model = glm::rotate(tmp, glm::radians(giroHomero), glm::vec3(0.0f, 1.0f, 0.0f));
+		//model = glm::rotate(tmp, glm::radians(giroHomero), glm::vec3(0.0f, 1.0f, 0.0f));
+		staticShader.setMat4("model", model);
+		homeroDona.Draw(staticShader);
 
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Carro
