@@ -12,7 +12,7 @@ El proyecto consiste en crear un ambiente virtual en el que se recrea un área r
 - 5 animaciones complejas, al menos una por la técnica de KeyFrames.
 - Incorporar una biblioteca de audio para agregara música de fondo
 
-Este proyecto cuenta con un [manual de usuario](link/al/archivo/pdf) en el que se describe claramente como está distribuida la estructura de carpetas, como configurar el proyecto en visual studio y como ejecutar el archivo .*exe*. El manual también incluye una descripción del escenario y las teclas que deben utilizarse para navegar entre este.
+Este proyecto cuenta con un [manual de usuario](./Documentacion_y_manual.pdf). El manual incluye una descripción del escenario y las teclas que deben utilizarse para navegar entre este.
 
 
 # Capturas de pantalla
