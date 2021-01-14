@@ -43,7 +43,7 @@ int SCR_HEIGHT = 600;
 GLFWmonitor *monitors;
 
 // camera
-Camera camera(glm::vec3(0.0f, 10.0f, 90.0f));
+Camera camera(glm::vec3(-28.50f, 102.00f, 594.00f));
 float MovementSpeed = 0.1f;
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
@@ -57,7 +57,7 @@ double	deltaTime = 0.0f,
 
 //Lighting
 glm::vec3 lightPosition(0.0f, 0.0f, 0.0f);
-glm::vec3 lightDirection(0.0f, -1.0f, -1.0f);
+glm::vec3 lightDirection(0.2f, -1.0f, -0.2f);
 
 // posiciones
 //float x = 0.0f;
@@ -315,11 +315,11 @@ int main()
 	Model LUZ("resources/objects/LUZ/LUZ.obj");
 	
 
-	ModelAnim animacionPersonaje("resources/objects/Personaje1/PersonajeBrazo.dae");
-	animacionPersonaje.initShaders(animShader.ID);
+	//ModelAnim animacionPersonaje("resources/objects/Personaje1/PersonajeBrazo.dae");
+	//animacionPersonaje.initShaders(animShader.ID);
 
-	ModelAnim ninja("resources/objects/Dying/Dying.dae");
-	ninja.initShaders(animShader.ID);
+	//ModelAnim ninja("resources/objects/Dying/Dying.dae");
+	//ninja.initShaders(animShader.ID);
 
 	//Inicialización de KeyFrames
 	for (int i = 0; i < MAX_FRAMES; i++)
@@ -370,17 +370,92 @@ int main()
 		staticShader.setVec3("pointLight[0].ambient", glm::vec3(0.0f, 0.0f, 0.0f));
 		staticShader.setVec3("pointLight[0].diffuse", glm::vec3(1.0f, 1.0f, 1.0f));
 		staticShader.setVec3("pointLight[0].specular", glm::vec3(0.0f, 0.0f, 0.0f));
-		staticShader.setFloat("pointLight[0].constant", 0.8f);
+		staticShader.setFloat("pointLight[0].constant", 0.5f);
 		staticShader.setFloat("pointLight[0].linear", 0.0009f);
 		staticShader.setFloat("pointLight[0].quadratic", 0.00032f);
 
-		staticShader.setVec3("pointLight[1].position", glm::vec3(0.0, 0.0f, 0.0f));
+		//(150.00,37.50,87.00),(234.00,37.50,87.00),(258.00,37.50,157.50),(157.50,37.50,196.50),(118.50,37.50,276.00),(160.50,78.00,87.00),(255.00,78.00,94.50),(259.50,78.00,162.00),(256.50,78.00,258.00)
+
+		staticShader.setVec3("pointLight[1].position", glm::vec3(150.00, 37.50, 87.00));
 		staticShader.setVec3("pointLight[1].ambient", glm::vec3(0.0f, 0.0f, 0.0f));
-		staticShader.setVec3("pointLight[1].diffuse", glm::vec3(0.0f, 0.0f, 0.0f));
+		staticShader.setVec3("pointLight[1].diffuse", glm::vec3(1.0f, 1.0f, 1.0f));
 		staticShader.setVec3("pointLight[1].specular", glm::vec3(0.0f, 0.0f, 0.0f));
-		staticShader.setFloat("pointLight[1].constant", 1.0f);
-		staticShader.setFloat("pointLight[1].linear", 0.009f);
-		staticShader.setFloat("pointLight[1].quadratic", 0.032f);
+		staticShader.setFloat("pointLight[1].constant", 2.5f);
+		staticShader.setFloat("pointLight[1].linear", 0.0009f);
+		staticShader.setFloat("pointLight[1].quadratic", 0.00032f);
+
+		staticShader.setVec3("pointLight[2].position", glm::vec3(234.00, 37.50, 87.00));
+		staticShader.setVec3("pointLight[2].ambient", glm::vec3(0.0f, 0.0f, 0.0f));
+		staticShader.setVec3("pointLight[2].diffuse", glm::vec3(1.0f, 1.0f, 1.0f));
+		staticShader.setVec3("pointLight[2].specular", glm::vec3(0.0f, 0.0f, 0.0f));
+		staticShader.setFloat("pointLight[2].constant", 2.5f);
+		staticShader.setFloat("pointLight[2].linear", 0.0009f);
+		staticShader.setFloat("pointLight[2].quadratic", 0.00032f);
+
+		staticShader.setVec3("pointLight[3].position", glm::vec3(258.00, 37.50, 157.50));
+		staticShader.setVec3("pointLight[3].ambient", glm::vec3(0.0f, 0.0f, 0.0f));
+		staticShader.setVec3("pointLight[3].diffuse", glm::vec3(1.0f, 1.0f, 1.0f));
+		staticShader.setVec3("pointLight[3].specular", glm::vec3(0.0f, 0.0f, 0.0f));
+		staticShader.setFloat("pointLight[3].constant", 2.5f);
+		staticShader.setFloat("pointLight[3].linear", 0.0009f);
+		staticShader.setFloat("pointLight[3].quadratic", 0.00032f);
+
+		staticShader.setVec3("pointLight[4].position", glm::vec3(157.50, 37.50, 196.50));
+		staticShader.setVec3("pointLight[4].ambient", glm::vec3(0.0f, 0.0f, 0.0f));
+		staticShader.setVec3("pointLight[4].diffuse", glm::vec3(1.0f, 1.0f, 1.0f));
+		staticShader.setVec3("pointLight[4].specular", glm::vec3(0.0f, 0.0f, 0.0f));
+		staticShader.setFloat("pointLight[4].constant", 2.5f);
+		staticShader.setFloat("pointLight[4].linear", 0.0009f);
+		staticShader.setFloat("pointLight[4].quadratic", 0.00032f);
+
+		staticShader.setVec3("pointLight[5].position", glm::vec3(118.50, 37.50, 276.00));
+		staticShader.setVec3("pointLight[5].ambient", glm::vec3(0.0f, 0.0f, 0.0f));
+		staticShader.setVec3("pointLight[5].diffuse", glm::vec3(1.0f, 1.0f, 1.0f));
+		staticShader.setVec3("pointLight[5].specular", glm::vec3(0.0f, 0.0f, 0.0f));
+		staticShader.setFloat("pointLight[5].constant", 2.5f);
+		staticShader.setFloat("pointLight[5].linear", 0.0009f);
+		staticShader.setFloat("pointLight[5].quadratic", 0.00032f);
+
+		staticShader.setVec3("pointLight[6].position", glm::vec3(160.50, 78.00, 87.00));
+		staticShader.setVec3("pointLight[6].ambient", glm::vec3(0.0f, 0.0f, 0.0f));
+		staticShader.setVec3("pointLight[6].diffuse", glm::vec3(1.0f, 1.0f, 1.0f));
+		staticShader.setVec3("pointLight[6].specular", glm::vec3(0.0f, 0.0f, 0.0f));
+		staticShader.setFloat("pointLight[6].constant", 2.5f);
+		staticShader.setFloat("pointLight[6].linear", 0.0009f);
+		staticShader.setFloat("pointLight[6].quadratic", 0.00032f);
+
+		staticShader.setVec3("pointLight[7].position", glm::vec3(255.00, 78.00, 94.50));
+		staticShader.setVec3("pointLight[7].ambient", glm::vec3(0.0f, 0.0f, 0.0f));
+		staticShader.setVec3("pointLight[7].diffuse", glm::vec3(1.0f, 1.0f, 1.0f));
+		staticShader.setVec3("pointLight[7].specular", glm::vec3(0.0f, 0.0f, 0.0f));
+		staticShader.setFloat("pointLight[7].constant", 2.5f);
+		staticShader.setFloat("pointLight[7].linear", 0.0009f);
+		staticShader.setFloat("pointLight[7].quadratic", 0.00032f);
+
+		staticShader.setVec3("pointLight[8].position", glm::vec3(259.50, 78.00, 162.00));
+		staticShader.setVec3("pointLight[8].ambient", glm::vec3(0.0f, 0.0f, 0.0f));
+		staticShader.setVec3("pointLight[8].diffuse", glm::vec3(1.0f, 1.0f, 1.0f));
+		staticShader.setVec3("pointLight[8].specular", glm::vec3(0.0f, 0.0f, 0.0f));
+		staticShader.setFloat("pointLight[8].constant", 3.5f);
+		staticShader.setFloat("pointLight[8].linear", 0.0009f);
+		staticShader.setFloat("pointLight[8].quadratic", 0.00032f);
+
+		staticShader.setVec3("pointLight[9].position", glm::vec3(256.50, 78.00, 258.00));
+		staticShader.setVec3("pointLight[9].ambient", glm::vec3(0.0f, 0.0f, 0.0f));
+		staticShader.setVec3("pointLight[9].diffuse", glm::vec3(1.0f, 1.0f, 1.0f));
+		staticShader.setVec3("pointLight[9].specular", glm::vec3(0.0f, 0.0f, 0.0f));
+		staticShader.setFloat("pointLight[9].constant", 3.5f);
+		staticShader.setFloat("pointLight[9].linear", 0.0009f);
+		staticShader.setFloat("pointLight[9].quadratic", 0.00032f);
+
+		staticShader.setVec3("pointLight[10].position", glm::vec3(274.50, 37.50, 231.00));
+		staticShader.setVec3("pointLight[10].ambient", glm::vec3(0.0f, 0.0f, 0.0f));
+		staticShader.setVec3("pointLight[10].diffuse", glm::vec3(1.0f, 1.0f, 1.0f));
+		staticShader.setVec3("pointLight[10].specular", glm::vec3(0.0f, 0.0f, 0.0f));
+		staticShader.setFloat("pointLight[10].constant", 3.5f);
+		staticShader.setFloat("pointLight[10].linear", 0.0009f);
+		staticShader.setFloat("pointLight[10].quadratic", 0.00032f);
+		
 
 		staticShader.setFloat("material_shininess", 32.0f);
 
@@ -402,33 +477,33 @@ int main()
 		// Personaje Animacion
 		// -------------------------------------------------------------------------------------------------------------------------
 		//Remember to activate the shader with the animation
-		animShader.use();
-		animShader.setMat4("projection", projection);
-		animShader.setMat4("view", view);
-	
-		animShader.setVec3("material.specular", glm::vec3(0.5f));
-		animShader.setFloat("material.shininess", 32.0f);
-		animShader.setVec3("light.ambient", ambientColor);
-		animShader.setVec3("light.diffuse", diffuseColor);
-		animShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
-		animShader.setVec3("light.direction", lightDirection);
-		animShader.setVec3("viewPos", camera.Position);
-
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(-40.3f, 1.75f, 0.3f)); // translate it down so it's at the center of the scene
-		model = glm::scale(model, glm::vec3(1.2f));	// it's a bit too big for our scene, so scale it down
-		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		animShader.setMat4("model", model);
-		animacionPersonaje.Draw(animShader);
+		//animShader.use();
+		//animShader.setMat4("projection", projection);
+		//animShader.setMat4("view", view);
+		//
+		//animShader.setVec3("material.specular", glm::vec3(0.5f));
+		//animShader.setFloat("material.shininess", 32.0f);
+		//animShader.setVec3("light.ambient", ambientColor);
+		//animShader.setVec3("light.diffuse", diffuseColor);
+		//animShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+		//animShader.setVec3("light.direction", lightDirection);
+		//animShader.setVec3("viewPos", camera.Position);
+		//
+		//model = glm::translate(glm::mat4(1.0f), glm::vec3(-40.3f, 1.75f, 0.3f)); // translate it down so it's at the center of the scene
+		//model = glm::scale(model, glm::vec3(1.2f));	// it's a bit too big for our scene, so scale it down
+		//model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		//animShader.setMat4("model", model);
+		//animacionPersonaje.Draw(animShader);
 
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Segundo Personaje Animacion
 		// -------------------------------------------------------------------------------------------------------------------------
 
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(40.3f, 1.75f, 0.3f)); // translate it down so it's at the center of the scene
-		model = glm::scale(model, glm::vec3(0.5f));	// it's a bit too big for our scene, so scale it down
-		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		animShader.setMat4("model", model);
-		ninja.Draw(animShader);
+		//model = glm::translate(glm::mat4(1.0f), glm::vec3(40.3f, 1.75f, 0.3f)); // translate it down so it's at the center of the scene
+		//model = glm::scale(model, glm::vec3(0.5f));	// it's a bit too big for our scene, so scale it down
+		//model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		//animShader.setMat4("model", model);
+		//ninja.Draw(animShader);
 
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Escenario
