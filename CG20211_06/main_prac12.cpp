@@ -80,14 +80,38 @@ float	movAuto_x = 0.0f,
 		movAuto_z = 0.0f,
 		orienta = 0.0f,
 		homero_x = 0.0f,
-		homero_z = 0.0f;
+		homero_z = 0.0f,
+		girpollo = 0.0f, //variable giro pollo
+		r1 = 0.0f, //Variables podadora
+		pX = 0.0f,
+		pZ = 0.0f,
+		rotPod = 0.0f,
+		r2 = 0.0f,
+		r3 = 0.0f,
+		r4 = 0.0f,
+		r5 = 0.0f,
+		rotPoda = 0.0f;
 
 bool	animacion = false,
 		recorrido1 = true,
 		recorrido2 = false,
 		recorrido3 = false,
 		recorrido4 = false,
-		direccionH = true;
+		direccionH = true,
+		animGlobo = false, // variable movimiento globo
+		animPod = false, // variable movimiento podadora
+		rec1 = true, //recorridos globo
+		rec2 = false, //recorridos podadora
+		rec3 = false,
+		rec4 = false,
+		rec5 = false,
+		rec6 = false,
+		recp1 = true,
+		recp2 = false,
+		recp3 = false,
+		recp4 = false,
+		recp5 = false,
+		recp6 = false;
 
 
 //Keyframes (Manipulación y dibujo)
@@ -237,6 +261,119 @@ void animate(void)
 			}
 		}
 	}
+	//---------------Animacion globo-------------------
+	if (animGlobo) {
+		if (rec1) {
+			r1 += 5.0f;
+			if (r1 > 90.0f)
+			{
+				rec1 = false;
+				rec2 = true;
+			}
+		}
+		if (rec2) {
+			r2 += 5.0f;
+			if (r2 > 200.0f)
+			{
+				rec2 = false;
+				rec3 = true;
+			}
+		}
+		if (rec3) {
+			r3 -= 5.0f;
+			if (r3 < -90.0f)
+			{
+				rec3 = false;
+				rec4 = true;
+			}
+		}
+		if (rec4) {
+			r2 += 5.0f;
+			if (r2 > 90.0f)
+			{
+				rec4 = false;
+				rec5 = true;
+			}
+		}
+		if (rec5) {
+			r1 -= 5.0f;
+			if (r1 < -605.0f)
+			{
+				rec5 = false;
+				rec6 = true;
+			}
+		}
+		if (rec6) {
+			r2 -= 5.0f;
+			if (r2 < 0.0f)
+			{
+				rec6 = false;
+
+			}
+		}
+	}
+	//--------------------------Animacion pollo---------------
+	if (360 > girpollo)
+		girpollo += 0.9f;
+	else
+		girpollo = 0.0f;
+
+	//--------------------------Animacion podadora---------------
+	if (animGlobo) {
+		if (recp1) {
+			pX += 5.0f;
+			if (pX > 350.0f)
+			{
+				recp1 = false;
+				recp2 = true;
+			}
+		}
+		if (recp2) {
+			pZ -= 5.0f;
+			rotPoda = 90.0f;
+			if (pZ < -100.0f)
+			{
+				recp2 = false;
+				recp3 = true;
+			}
+		}
+		if (recp3) {
+			pX -= 5.0f;
+			rotPoda = 180.0f;
+			if (pX < 220.0f)
+			{
+				recp3 = false;
+				recp4 = true;
+			}
+		}
+		if (recp4) {
+			pZ -= 5.0f;
+			rotPoda = 90;
+			if (pZ < -200.0f)
+			{
+				recp4 = false;
+				recp5 = true;
+			}
+		}
+		if (recp5) {
+			pX += 5.0f;
+			rotPoda = 360;
+			if (pX > 350.0f)
+			{
+				recp5 = false;
+				recp6 = true;
+			}
+		}
+		if (recp6) {
+			pZ -= 5.0f;
+			rotPoda = 90.0f;
+			if (pZ < -300.0f)
+			{
+				recp6 = false;
+
+			}
+		}
+	}
 
 	//-----------------------------Homero animación-----------------------------------
 	if (homero_x  >=  35.0f || homero_x <= -50.0f) {
@@ -353,6 +490,12 @@ int main()
 	Model cubo("resources/objects/cubo/cube02.obj");
 	Model LUZ("resources/objects/LUZ/LUZ.obj");
 	Model homeroDona("resources/objects/HomeroAlberca/HomeroALow.obj");
+
+	//Modelos jardin
+	Model globo("resources/objects/globo/globo.obj");
+	Model parrilla("resources/objects/parrilla/parrilla.obj");
+	Model pollo("resources/objects/pollo/pollo.obj");
+	Model podadora("resources/objects/podadora/podadora.obj");
 
 	//ModelAnim animacionPersonaje("resources/objects/Personaje1/PersonajeBrazo.dae");
 	//animacionPersonaje.initShaders(animShader.ID);
@@ -676,6 +819,43 @@ int main()
 		staticShader.setMat4("model", model);
 		cubo.Draw(staticShader);
 		glEnable(GL_BLEND);
+		//----------Modelos jardin
+		//globo//
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(r1, r2, r3));//$$$$$$$$$$$$$$$$$$$$$$$$$$ Posicion inicial de el lambo
+		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0)); //$$$$$$$$$$$$$$$$$$$$$$$$$$ giro modelo en funcion del teclado
+		model = glm::rotate(model, glm::radians(rotPod), glm::vec3(0.0f, 1.0f, 0.0));
+		model = glm::scale(model, glm::vec3(0.1));
+		staticShader.setMat4("model", model);
+		globo.Draw(staticShader);
+
+		//parrilla//
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(100.0, 0.0, -8.0));//$$$$$$$$$$$$$$$$$$$$$$$$$$ Posicion inicial de el lambo
+		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0)); //$$$$$$$$$$$$$$$$$$$$$$$$$$ giro modelo en funcion del teclado
+		model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 0.0f, 1.0));
+		model = glm::scale(model, glm::vec3(0.1));
+		staticShader.setMat4("model", model);
+		parrilla.Draw(staticShader);
+
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(100.0f, 12.0, -8.5));//$$$$$$$$$$$$$$$$$$$$$$$$$$ Posicion inicial de el lambo
+		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0)); //$$$$$$$$$$$$$$$$$$$$$$$$$$ giro modelo en funcion del teclado
+		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0));
+		model = glm::rotate(model, glm::radians(girpollo), glm::vec3(0.0f, 0.0f, 1.0));
+		model = glm::scale(model, glm::vec3(0.015));
+		staticShader.setMat4("model", model);
+		pollo.Draw(staticShader);
+		//podadora//
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(155.0 + pX, 0.5, -8.5 + pZ));//$$$$$$$$$$$$$$$$$$$$$$$$$$ Posicion inicial de el lambo
+		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0)); //$$$$$$$$$$$$$$$$$$$$$$$$$$ giro modelo en funcion del teclado
+		model = glm::rotate(model, glm::radians(rotPoda), glm::vec3(0.0f, 0.0f, 1.0));
+		model = glm::scale(model, glm::vec3(0.2));
+		staticShader.setMat4("model", model);
+		podadora.Draw(staticShader);
+
+
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Termina Escenario
 		// -------------------------------------------------------------------------------------------------------------------------
@@ -780,6 +960,7 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 	if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
 		animacion ^= true;
 
+
 	//To play KeyFrame animation 
 	if (key == GLFW_KEY_P && action == GLFW_PRESS)
 	{
@@ -809,6 +990,9 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 			saveFrame();
 		}
 	}
+	//Activa globo y podadora
+	if (key == GLFW_KEY_K && action == GLFW_PRESS)
+		animGlobo ^= true;
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
