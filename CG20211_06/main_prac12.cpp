@@ -12,9 +12,11 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <time.h>
 
-
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>	//Texture
+
+// OpenAL
+#include <AL/alut.h>
 
 #define SDL_MAIN_HANDLED
 #include <SDL/SDL.h>
@@ -23,8 +25,15 @@
 #include <camera.h>
 #include <modelAnim.h>
 #include <model.h>
+
 #include <Skybox.h>
 #include <iostream>
+
+/*------------------------------OpenAL-------------------------------------*/
+#define FILENAME "resources/audio/TheSimpsons.wav"
+ALuint buffer, source;
+/*--------------------------------------------------------------------------*/
+
 
 //#pragma comment(lib, "winmm.lib")
 
@@ -369,8 +378,47 @@ int main()
 
 	// render loop
 	// -----------
+	/*------------------------------OpenAL-------------------------------------*/
+	// OpenAL init
+
+
+	ALint state;
+
+	// Initialize the environment
+	alutInit(0, NULL);
+
+	// Capture errors
+	alGetError();
+
+	// Load pcm data into buffer
+	buffer = alutCreateBufferFromFile(FILENAME);
+
+	// Create sound source (use buffer to fill source)
+	alGenSources(1, &source);
+	alSourcei(source, AL_BUFFER, buffer);
+
+	// Play
+	alSourcePlay(source);
+
+	// Wait for the song to complete
+	//do {
+	//	alGetSourcei(source, AL_SOURCE_STATE, &state);
+	//} while (state == AL_PLAYING);
+
+
+	/*-------------------------------------------------------------------------*/
+
+
+
+
+
+
+	
+	
+	
 	while (!glfwWindowShouldClose(window))
 	{
+
 		skyboxShader.setInt("skybox", 0);
 		
 		// per-frame time logic
@@ -611,9 +659,21 @@ int main()
 		glfwPollEvents();
 	}
 
+
+
+
 	skybox.Terminate();
 
 	glfwTerminate();
+
+	// Clean up sources and buffers
+	alDeleteSources(1, &source);
+	alDeleteBuffers(1, &buffer);
+
+	// Exit everything
+	//alutExit();
+
+
 	return 0;
 }
 
