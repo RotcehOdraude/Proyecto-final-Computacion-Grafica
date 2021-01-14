@@ -80,14 +80,37 @@ float	movAuto_x = 0.0f,
 		movAuto_z = 0.0f,
 		orienta = 0.0f,
 		homero_x = 0.0f,
-		homero_z = 0.0f;
+		homero_z = 0.0f,
+		girpollo = 0.0f, //variable giro pollo
+		r1 = 0.0f, //Variables podadora
+		pX = 0.0f,
+		pZ = 0.0f,
+		rotPod = 0.0f,
+		r2 = 0.0f,
+		r3 = 0.0f,
+		r4 = 0.0f,
+		r5 = 0.0f;
 
 bool	animacion = false,
 		recorrido1 = true,
 		recorrido2 = false,
 		recorrido3 = false,
 		recorrido4 = false,
-		direccionH = true;
+		direccionH = true,
+		animGlobo = false, // variable movimiento globo
+		animPod = false, // variable movimiento podadora
+		rec1 = true, //recorridos globo
+		rec2 = false, //recorridos podadora
+		rec3 = false,
+		rec4 = false,
+		rec5 = false,
+		rec6 = false,
+		recp1 = true,
+		recp2 = false,
+		recp3 = false,
+		recp4 = false,
+		recp5 = false,
+		recp6 = false;
 
 
 //Keyframes (Manipulación y dibujo)
