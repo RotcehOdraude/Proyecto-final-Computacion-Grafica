@@ -734,11 +734,11 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 		camera.ProcessKeyboard(RIGHT, (float)deltaTime);
 	//Ligth
 	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
-		lightPosition.x += 1.5f;
+		lightDirection.x += 0.5f;
 		printf("(%.2f,%.2f,%.2f)\n", lightPosition.x, lightPosition.y, lightPosition.z);
 	}
 	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
-		lightPosition.x -= 1.5f;
+		lightDirection.x -= 0.5f;
 		printf("(%.2f,%.2f,%.2f)\n", lightPosition.x, lightPosition.y, lightPosition.z);
 	}
 	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
