@@ -56,7 +56,7 @@ double	deltaTime = 0.0f,
 		lastFrame = 0.0f;
 
 //Lighting
-glm::vec3 lightPosition(0.0f, 4.0f, -10.0f);
+glm::vec3 lightPosition(0.0f, 0.0f, 0.0f);
 glm::vec3 lightDirection(0.0f, -1.0f, -1.0f);
 
 // posiciones
@@ -301,8 +301,7 @@ int main()
 	skyboxShader.setInt("skybox", 0);
 
 	// load models
-	// -----------
-	Model piso("resources/objects/piso/piso.obj");
+	// -----------Homero
 	Model botaDer("resources/objects/Personaje/bota.obj");
 	Model piernaDer("resources/objects/PersonajeHomero/piernaDer.obj");
 	Model piernaIzq("resources/objects/PersonajeHomero/piernaIzq.obj");
@@ -310,12 +309,11 @@ int main()
 	Model brazoDer("resources/objects/PersonajeHomero/brazoDer.obj");
 	Model brazoIzq("resources/objects/PersonajeHomero/brazoIzq.obj");
 	Model cabeza("resources/objects/PersonajeHomero/cabeza.obj");
-	Model carro("resources/objects/lambo/carroceria.obj");
-	Model llanta("resources/objects/lambo/Wheel.obj");
-	//Model casaVieja("resources/objects/casa/OldHouse.obj");
+	//
 	Model casaVieja("resources/objects/Escenario2/Escenario.obj");
 	Model cubo("resources/objects/cubo/cube02.obj");
-	Model casaDoll("resources/objects/Marge/Marge3Low.obj");
+	Model LUZ("resources/objects/LUZ/LUZ.obj");
+	
 
 	ModelAnim animacionPersonaje("resources/objects/Personaje1/PersonajeBrazo.dae");
 	animacionPersonaje.initShaders(animShader.ID);
@@ -364,14 +362,17 @@ int main()
 		staticShader.setVec3("dirLight.ambient", glm::vec3(0.2f, 0.2f, 0.2f));
 		staticShader.setVec3("dirLight.diffuse", glm::vec3(1.0f, 1.0f, 1.0f));
 		staticShader.setVec3("dirLight.specular", glm::vec3(0.0f, 0.0f, 0.0f));
+		//staticShader.setVec3("dirLight.ambient", glm::vec3(0.0f, 0.0f, 0.0f));
+		//staticShader.setVec3("dirLight.diffuse", glm::vec3(0.0f, 0.0f, 0.0f));
+		//staticShader.setVec3("dirLight.specular", glm::vec3(0.0f, 0.0f, 0.0f));
 
 		staticShader.setVec3("pointLight[0].position", lightPosition);
 		staticShader.setVec3("pointLight[0].ambient", glm::vec3(0.0f, 0.0f, 0.0f));
-		staticShader.setVec3("pointLight[0].diffuse", glm::vec3(0.0f, 0.0f, 0.0f));
+		staticShader.setVec3("pointLight[0].diffuse", glm::vec3(1.0f, 1.0f, 1.0f));
 		staticShader.setVec3("pointLight[0].specular", glm::vec3(0.0f, 0.0f, 0.0f));
 		staticShader.setFloat("pointLight[0].constant", 0.8f);
-		staticShader.setFloat("pointLight[0].linear", 0.009f);
-		staticShader.setFloat("pointLight[0].quadratic", 0.032f);
+		staticShader.setFloat("pointLight[0].linear", 0.0009f);
+		staticShader.setFloat("pointLight[0].quadratic", 0.00032f);
 
 		staticShader.setVec3("pointLight[1].position", glm::vec3(0.0, 0.0f, 0.0f));
 		staticShader.setVec3("pointLight[1].ambient", glm::vec3(0.0f, 0.0f, 0.0f));
@@ -436,10 +437,6 @@ int main()
 		staticShader.setMat4("projection", projection);
 		staticShader.setMat4("view", view);
 
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(250.0f, 0.0f, -10.0f));
-		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		staticShader.setMat4("model", model);
-		casaDoll.Draw(staticShader);
 
 		
 
@@ -447,38 +444,14 @@ int main()
 		model = glm::scale(model, glm::vec3(5.0f));
 		staticShader.setMat4("model", model);
 		casaVieja.Draw(staticShader);
-
 		// -------------------------------------------------------------------------------------------------------------------------
-		// Carro
+		// Luz
 		// -------------------------------------------------------------------------------------------------------------------------
-		model = glm::rotate(glm::mat4(1.0f), glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::translate(model, glm::vec3(15.0f + movAuto_x, -1.0f, movAuto_z));
-		tmp = model = glm::rotate(model, glm::radians(orienta), glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(lightPosition.x, lightPosition.y, lightPosition.z));
+		model = glm::scale(model, glm::vec3(5.0f));
 		staticShader.setMat4("model", model);
-		carro.Draw(staticShader);
-
-		model = glm::translate(tmp, glm::vec3(8.5f, 2.5f, 12.9f));
-		model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
-		staticShader.setMat4("model", model);
-		llanta.Draw(staticShader);	//Izq delantera
-
-		model = glm::translate(tmp, glm::vec3(-8.5f, 2.5f, 12.9f));
-		model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
-		model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		staticShader.setMat4("model", model);
-		llanta.Draw(staticShader);	//Der delantera
-
-		model = glm::translate(tmp, glm::vec3(-8.5f, 2.5f, -14.5f));
-		model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
-		model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		staticShader.setMat4("model", model);
-		llanta.Draw(staticShader);	//Der trasera
-
-		model = glm::translate(tmp, glm::vec3(8.5f, 2.5f, -14.5f));
-		model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
-		staticShader.setMat4("model", model);
-		llanta.Draw(staticShader);	//Izq trase
+		LUZ.Draw(staticShader);
+		
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Personaje
 		// -------------------------------------------------------------------------------------------------------------------------
@@ -537,7 +510,7 @@ int main()
 		// -------------------------------------------------------------------------------------------------------------------------
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -70.0f));
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(5000.0f, 0.0f, -70.0f));
 		model = glm::scale(model, glm::vec3(5.0f));
 		staticShader.setMat4("model", model);
 		cubo.Draw(staticShader);
@@ -586,6 +559,32 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 		camera.ProcessKeyboard(LEFT, (float)deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		camera.ProcessKeyboard(RIGHT, (float)deltaTime);
+	//Ligth
+	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
+		lightPosition.x += 1.5f;
+		printf("(%.2f,%.2f,%.2f)\n", lightPosition.x, lightPosition.y, lightPosition.z);
+	}
+	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
+		lightPosition.x -= 1.5f;
+		printf("(%.2f,%.2f,%.2f)\n", lightPosition.x, lightPosition.y, lightPosition.z);
+	}
+	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
+		lightPosition.y += 1.5f;
+		printf("(%.2f,%.2f,%.2f)\n", lightPosition.x, lightPosition.y, lightPosition.z);
+	}
+	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
+		lightPosition.y -= 1.5f;
+		printf("(%.2f,%.2f,%.2f)\n", lightPosition.x, lightPosition.y, lightPosition.z);
+	}
+	if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS) {
+		lightPosition.z += 1.5f;
+		printf("(%.2f,%.2f,%.2f)\n", lightPosition.x, lightPosition.y, lightPosition.z);
+	}
+	if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS) {
+		lightPosition.z -= 1.5f;
+		printf("(%.2f,%.2f,%.2f)\n", lightPosition.x, lightPosition.y, lightPosition.z);
+	}
+		
 	//To Configure Model
 	if (glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS)
 		posZ++;
