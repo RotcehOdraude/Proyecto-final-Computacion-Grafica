@@ -1,8 +1,8 @@
 # Proyecto Computación Gráfica 2021-1!
 > **Integrantes del proyecto:**
 > - Cabello Aguilar Héctor Eduardo
-> - García Andrea
-> - Rueda Luz
+> - García Ruiz Andrea
+> - Rueda Rojas Luz Elena
 
 Este repositorio contiene el **desarrollo del proyecto final** de la materia Computación Gráfica e interacción humano computadora.
 

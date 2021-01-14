@@ -1,7 +1,10 @@
 /*---------------------------------------------------------*/
-/* ----------------   Práctica 12 --------------------------*/
+/* ----------------   Proyecto Final ----------------------*/
 /*-----------------    2021-1   ---------------------------*/
 /*------- Alumno:Cabello Aguilar Héctor Eduardo -----------*/
+/*------- Alumno:García Ruiz Andrea -----------------------*/
+/*------- Alumno:Rueda Rojas Luz Elena --------------------*/
+
 #include <Windows.h>
 
 #include <glad/glad.h>
@@ -424,7 +427,7 @@ int main()
 	// --------------------
 	monitors = glfwGetPrimaryMonitor();
 	getResolution();
-	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Practica 12", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Proyecto final Computación Gráfica", NULL, NULL);
 	if (window == NULL)
 	{
 		std::cout << "Failed to create GLFW window" << std::endl;
