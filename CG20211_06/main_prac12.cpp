@@ -238,7 +238,7 @@ void animate(void)
 		}
 	}
 
-	
+	//-----------------------------Homero animación-----------------------------------
 	if (homero_x  >=  35.0f || homero_x <= -50.0f) {
 		dx_Homero = -dx_Homero;
 		direccionH = -direccionH;
@@ -256,7 +256,7 @@ void animate(void)
 
 	homero_x += dx_Homero;
 	homero_z += dz_Homero;
-	
+	//--------------------------------------------------------------------------------
 	
 }
 void getResolution()
