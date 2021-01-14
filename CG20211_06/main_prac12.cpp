@@ -960,6 +960,7 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 	if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
 		animacion ^= true;
 
+
 	//To play KeyFrame animation 
 	if (key == GLFW_KEY_P && action == GLFW_PRESS)
 	{
@@ -989,6 +990,9 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 			saveFrame();
 		}
 	}
+	//Activa globo y podadora
+	if (key == GLFW_KEY_K && action == GLFW_PRESS)
+		animGlobo ^= true;
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
