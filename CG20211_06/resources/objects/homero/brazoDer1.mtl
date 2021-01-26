@@ -1,0 +1,18 @@
+newmtl brazoDer1:Skin_001
+illum 4
+Kd 0.00 0.00 0.00
+Ka 1.00 1.00 1.00
+Tf 1.00 1.00 1.00
+map_Kd Amarillo.png
+Ni 1.45
+Ks 0.50 0.50 0.50
+Ns 225.00
+newmtl brazoDer1:T_Shirt_001
+illum 4
+Kd 0.00 0.00 0.00
+Ka 1.00 1.00 1.00
+Tf 1.00 1.00 1.00
+map_Kd white.jpg
+Ni 1.45
+Ks 0.50 0.50 0.50
+Ns 377.51
