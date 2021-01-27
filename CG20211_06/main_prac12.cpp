@@ -548,12 +548,12 @@ int main()
 
 	vector<std::string> faces2												    //--------------------Skybox1
 	{
-		"resources/skybox2/right2.tga",
-		"resources/skybox2/left2.tga",
-		"resources/skybox2/top2.tga",
-		"resources/skybox2/bottom2.tga",
-		"resources/skybox2/front2.tga",
-		"resources/skybox2/back2.tga"
+		"resources/skybox2/right2.jpg",
+		"resources/skybox2/left2.jpg",
+		"resources/skybox2/top2.jpg",
+		"resources/skybox2/bottom2.jpg",
+		"resources/skybox2/front2.jpg",
+		"resources/skybox2/back2.jpg"
 	};
 
 	Skybox skybox = Skybox(faces);												//--------------------Skybox1
@@ -2668,11 +2668,26 @@ int main()
 		// don't forget to enable shader before setting uniforms
 		staticShader.use();
 		//Setup Advanced Lights
-		staticShader.setVec3("viewPos", camera.Position);
+
+		/*staticShader.setVec3("viewPos", camera.Position);
 		staticShader.setVec3("dirLight.direction", lightDirection);
 		staticShader.setVec3("dirLight.ambient", glm::vec3(0.2f, 0.2f, 0.2f));
 		staticShader.setVec3("dirLight.diffuse", glm::vec3(1.0f, 1.0f, 1.0f));
 		staticShader.setVec3("dirLight.specular", glm::vec3(0.0f, 0.0f, 0.0f));
+		*/
+		if (dia) {
+			staticShader.setVec3("dirLight.direction", lightDirection);
+			staticShader.setVec3("dirLight.ambient", glm::vec3(0.2f, 0.2f, 0.2f));
+			staticShader.setVec3("dirLight.diffuse", glm::vec3(1.0f, 1.0f, 1.0f));
+			staticShader.setVec3("dirLight.specular", glm::vec3(0.0f, 0.0f, 0.0f));
+		}
+		else
+		{
+			staticShader.setVec3("dirLight.direction", lightDirection);
+			staticShader.setVec3("dirLight.ambient", glm::vec3(0.2f, 0.2f, 0.2f));
+			staticShader.setVec3("dirLight.diffuse", glm::vec3(0.0f, 0.0f, 1.0f));
+			staticShader.setVec3("dirLight.specular", glm::vec3(0.0f, 0.0f, 0.0f));
+		}
 		//staticShader.setVec3("dirLight.ambient", glm::vec3(0.0f, 0.0f, 0.0f));
 		//staticShader.setVec3("dirLight.diffuse", glm::vec3(0.0f, 0.0f, 0.0f));
 		//staticShader.setVec3("dirLight.specular", glm::vec3(0.0f, 0.0f, 0.0f));
