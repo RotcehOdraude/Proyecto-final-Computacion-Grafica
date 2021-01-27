@@ -59,7 +59,7 @@ Camera camera(glm::vec3(-28.50f, 102.00f, 594.00f));
 float MovementSpeed = 0.2f; //Velocidad de la camara
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
-bool firstMouse = true;
+bool firstMouse = true, dia = true;
 
 
 
@@ -532,10 +532,11 @@ int main()
 	// -------------------------
 	//Shader staticShader("Shaders/lightVertex.vs", "Shaders/lightFragment.fs");
 	Shader staticShader("Shaders/shader_Lights.vs", "Shaders/shader_Lights.fs");
-	Shader skyboxShader("Shaders/skybox.vs", "Shaders/skybox.fs");
+	Shader skyboxShader("Shaders/skybox.vs", "Shaders/skybox.fs");				//--------------------Skybox shader
 	Shader animShader("Shaders/anim.vs", "Shaders/anim.fs");
+
 	
-	vector<std::string> faces
+	vector<std::string> faces												    //--------------------Skybox1
 	{
 		"resources/skybox/right.jpg",
 		"resources/skybox/left.jpg",
@@ -545,12 +546,22 @@ int main()
 		"resources/skybox/back.jpg"
 	};
 
-	Skybox skybox = Skybox(faces);
+	vector<std::string> faces2												    //--------------------Skybox1
+	{
+		"resources/skybox2/right2.tga",
+		"resources/skybox2/left2.tga",
+		"resources/skybox2/top2.tga",
+		"resources/skybox2/bottom2.tga",
+		"resources/skybox2/front2.tga",
+		"resources/skybox2/back2.tga"
+	};
 
+	Skybox skybox = Skybox(faces);												//--------------------Skybox1
+	Skybox skybox2 = Skybox(faces2);
 	// Shader configuration
 	// --------------------
 	skyboxShader.use();
-	skyboxShader.setInt("skybox", 0);
+	skyboxShader.setInt("skybox", 0);											//--------------------Skybox shader
 
 	// load models
 	// -----------Homero
@@ -2927,9 +2938,15 @@ int main()
 		//-------------------------------------------------------------------------------------
 		// draw skybox as last
 		// -------------------
-		skyboxShader.use();
-		skybox.Draw(skyboxShader, view, projection, camera);
-
+		if (dia) {
+			skyboxShader.use();
+			skybox.Draw(skyboxShader, view, projection, camera);
+		}
+		else {
+			skyboxShader.use();
+			skybox2.Draw(skyboxShader, view, projection, camera);
+		}
+		
 		// Limitar el framerate a 60
 		deltaTime = SDL_GetTicks() - lastFrame; // time for full 1 loop
 		//std::cout <<"frame time = " << frameTime << " milli sec"<< std::endl;
@@ -3019,9 +3036,10 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 		giroMonito++;
 
 	//Car animation
-	if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
+	if (key == GLFW_KEY_SPACE && action == GLFW_PRESS) {
 		animacion ^= true;
-
+		dia = false;
+	}
 
 	//To play KeyFrame animation 
 	if (key == GLFW_KEY_P && action == GLFW_PRESS)
