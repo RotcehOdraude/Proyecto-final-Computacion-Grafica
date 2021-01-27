@@ -93,28 +93,35 @@ float	movAuto_x = 0.0f,
 		r3 = 0.0f,
 		r4 = 0.0f,
 		r5 = 0.0f,
-		rotPoda = 0.0f;
+		rotPoda = 0.0f,
+		giroUfo = 0.0f;
 
 bool	animacion = false,
-		recorrido1 = true,
-		recorrido2 = false,
-		recorrido3 = false,
-		recorrido4 = false,
-		direccionH = true,
-		animGlobo = false, // variable movimiento globo
-		animPod = false, // variable movimiento podadora
-		rec1 = true, //recorridos globo
-		rec2 = false, //recorridos podadora
-		rec3 = false,
-		rec4 = false,
-		rec5 = false,
-		rec6 = false,
-		recp1 = true,
-		recp2 = false,
-		recp3 = false,
-		recp4 = false,
-		recp5 = false,
-		recp6 = false;
+recorrido1 = true,
+recorrido2 = false,
+recorrido3 = false,
+recorrido4 = false,
+direccionH = true,
+animGlobo = false, // variable movimiento globo
+animPod = false, // variable movimiento podadora
+rec1 = true, //recorridos globo
+rec2 = false, //recorridos podadora
+rec3 = false,
+rec4 = false,
+rec5 = false,
+rec6 = false,
+recp1 = true,
+recp2 = false,
+recp3 = false,
+recp4 = false,
+recp5 = false,
+recp6 = false,
+animOvni = false,
+rec1UFO = true,
+rec2UFO = false,
+rec3UFO = false;
+
+
 
 
 //Keyframes (Manipulación y dibujo)
@@ -150,7 +157,10 @@ posCerX = 0.0f,
 posCerY = 0.0f,
 posCerZ = 0.0f,
 posCab = 0.0f,
-giroMonitoInc = 0.0f;
+giroMonitoInc = 0.0f,
+posUFOX = 0.0f,
+posUFOY = 0.0f,
+posUFOZ = 0.0f;
 
 #define MAX_FRAMES 196
 int i_max_steps = 2;
@@ -463,6 +473,43 @@ void animate(void)
 	homero_x += dx_Homero;
 	homero_z += dz_Homero;
 	//--------------------------------------------------------------------------------
+
+	//--------------------------Animacion OVNI---------------
+	if (animOvni) {
+		if (rec1UFO) { // recorrido que sube el ovni
+			posUFOY += 5.0f;
+			if (posUFOY > 230.0f)
+			{
+				rec1UFO = false;
+				rec2UFO = true; 
+			}
+		}
+		if (rec2UFO) {
+			//movimiento(+) en Z incremental
+			posUFOZ += 1.0;
+			//movimiento en X de acuerdo a la expresión de la circunferencia
+			posUFOX = sqrt(90000 - (posUFOZ * posUFOZ));
+			printf("(%.2f,%.2f)\n", posUFOX, posUFOZ);
+			//el limite antes del valor del radio para evitar raices de cero o negativas
+			if (posUFOZ >= 299.0f) { 
+				rec2UFO = false;
+				rec3UFO = true;
+			}
+		}
+		if (rec3UFO) {
+			//movimiento(-) en Z incremental
+			posUFOZ -= 1.0;
+			//movimiento en X de acuerdo a la expresión de la circunferencia
+			posUFOX = -sqrt(90000 - (posUFOZ * posUFOZ));
+			printf("(%.2f,%.2f)\n", posUFOX, posUFOZ);
+			//el limite antes del valor del radio para evitar raices de cero o negativas
+			if (posUFOZ <= -299.0f) {
+				rec3UFO = false;
+				//rec4UFO = true;
+			}
+		}
+		
+	}
 	
 }
 void getResolution()
@@ -577,6 +624,9 @@ int main()
 	Model brazoIzq1("resources/objects/homero/brazoIzq1.obj");
 	Model piernaDer1("resources/objects/homero/piernaDer1.obj");
 	Model piernaIzq1("resources/objects/homero/piernaIzq1.obj");
+
+	//Modelo UFO
+	Model ufo("resources/objects/UFO/Low_poly_UFO.obj");
 
 	//ModelAnim animacionPersonaje("resources/objects/Personaje1/PersonajeBrazo.dae");
 	//animacionPersonaje.initShaders(animShader.ID);
@@ -2959,8 +3009,7 @@ int main()
 		staticShader.setMat4("model", model);
 		cubo.Draw(staticShader);
 		glEnable(GL_BLEND);
-		//----------Modelos jardin
-		//globo//
+		//----------Modelos jardin globo//
 		model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(r1, r2, r3));//$$$$$$$$$$$$$$$$$$$$$$$$$$ Posicion inicial de el lambo
 		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0)); //$$$$$$$$$$$$$$$$$$$$$$$$$$ giro modelo en funcion del teclado
@@ -3005,6 +3054,14 @@ int main()
 		staticShader.setMat4("model", model);
 		aspiradora.Draw(staticShader);
 
+		//UFO//
+		model = glm::mat4(1.0f);
+		//model = glm::translate(model, glm::vec3(-200.0 + posUFOX, 0.0 + posUFOY, -160.0 + posUFOZ));//$$$$$$$$$$$$$$$$$$$$$$$$$$ Posicion inicial de el lambo
+		model = glm::translate(model, glm::vec3(0.0 + posUFOX, 0.0 + posUFOY, 0.0 + posUFOZ));//$$$$$$$$$$$$$$$$$$$$$$$$$$ Posicion inicial de el lambo
+		model = glm::rotate(model, glm::radians(girpollo), glm::vec3(0.0f, 1.0f, 0.0)); //giro natural del ovni
+		model = glm::scale(model, glm::vec3(1));
+		staticShader.setMat4("model", model);
+		ufo.Draw(staticShader);
 
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Termina Escenario
@@ -3109,6 +3166,9 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 	//Car animation
 	if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
 		animacion ^= true;
+
+	if (key == GLFW_KEY_U && action == GLFW_PRESS)
+		animOvni ^= true;
 
 
 	//To play KeyFrame animation 
