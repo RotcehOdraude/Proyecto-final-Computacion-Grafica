@@ -104,7 +104,8 @@ bool	animacion = false,
 		recp3 = false,
 		recp4 = false,
 		recp5 = false,
-		recp6 = false;
+		recp6 = false,
+	    recorrido = false;
 
 
 //Keyframes (Manipulación y dibujo)
@@ -147,7 +148,7 @@ float y = 0.0f, x = -1400.0f,dx = 0.0f;
 bool iniciar = false;
 
 #define MAX_FRAMES 196
-int i_max_steps = 2;
+int i_max_steps = 2, contador = 0;
 int i_curr_steps = 0;
 typedef struct _frame
 {
@@ -298,6 +299,62 @@ void animate(void)
 	}
 
 	//Vehículo
+
+	if (recorrido) {
+
+		if (contador <= 140) {
+			contador++;
+			deltaTime -= 0.4f;
+			camera.ProcessKeyboard(FORWARD, (float)deltaTime / 100);
+
+		}
+
+		else if (contador <= 220) {
+
+			deltaTime += 0.4f;
+			camera.ProcessKeyboard(BACKWARD, (float)deltaTime * (-2.0f) / 100);
+			camera.ProcessKeyboard(LEFT, (float)deltaTime / 100);
+			contador++;
+		}
+
+
+		else if (contador <= 250) {
+
+			deltaTime += 0.4f;
+			camera.ProcessKeyboard(FORWARD, (float)deltaTime / 100);
+			contador++;
+		}
+
+
+		else if (contador <= 300) {
+
+			deltaTime += 0.4f;
+			camera.ProcessKeyboard(RIGHT, (float)deltaTime / 100);
+			camera.ProcessKeyboard(BACKWARD, (float)deltaTime * 0.25 / 100);
+			contador++;
+		}
+
+		else if (contador <= 350) {
+
+			deltaTime += 0.4f;
+			camera.ProcessKeyboard(RIGHT, (float)deltaTime / 100);
+			//camera.ProcessKeyboard(BACKWARD, (float)deltaTime*0.25);
+			contador++;
+		}
+
+		else if (contador <= 420) {
+
+			deltaTime += 0.4f;
+			camera.ProcessKeyboard(BACKWARD, (float)deltaTime / 100);
+			contador++;
+		}
+
+		else {
+			contador = 0;
+			recorrido = false;
+		}
+	}
+
 	/*f (animacion)
 	{
 		if (recorrido1)
@@ -3081,6 +3138,10 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 	//Activa globo y podadora
 	if (key == GLFW_KEY_K && action == GLFW_PRESS)
 		animGlobo ^= true;
+
+	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
+		recorrido = true;
+	}
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
