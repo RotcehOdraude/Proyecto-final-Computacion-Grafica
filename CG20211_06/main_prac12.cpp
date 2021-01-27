@@ -520,7 +520,8 @@ int main()
 		std::cout << "Failed to initialize GLAD" << std::endl;
 		return -1;
 	}
-
+	//Datos a utilizar
+	myData();
 	// configure global opengl state
 	// -----------------------------
 	glEnable(GL_DEPTH_TEST);
@@ -531,6 +532,8 @@ int main()
 	Shader staticShader("Shaders/shader_Lights.vs", "Shaders/shader_Lights.fs");
 	Shader skyboxShader("Shaders/skybox.vs", "Shaders/skybox.fs");
 	Shader animShader("Shaders/anim.vs", "Shaders/anim.fs");
+	//Shader secondShader("Shaders/shader.vs","Shaders/shader.fs");
+
 	
 	vector<std::string> faces
 	{
@@ -758,6 +761,7 @@ int main()
 		glm::mat4 modelTemp2 = glm::mat4(1.0f);		// Una matriz temporal
 		glm::mat4 modelTemp3 = glm::mat4(1.0f);		// Una matriz temporal
 		glm::mat4 modelTemp4 = glm::mat4(1.0f);		// Una matriz temporal
+		glm::mat4 secondView = glm::mat4(1.0f);
 
 		glm::mat4 model = glm::mat4(1.0f);
 		glm::mat4 tmp = glm::mat4(1.0f);
@@ -836,8 +840,13 @@ int main()
 		LUZ.Draw(staticShader);
 
 		//
-		glBindVertexArray(VAO);
 		//Colocar código aquí
+		//staticShader.use();
+		//staticShader.setMat4("model", model);
+		//staticShader.setMat4("view", view);
+		//staticShader.setMat4("projection", projection);
+
+		glBindVertexArray(VAO);
 
 		model = glm::scale(model, glm::vec3(5.0f, 4.0f, 1.0f));
 		staticShader.setMat4("model", model);
@@ -1112,7 +1121,7 @@ int main()
 		// -------------------------------------------------------------------------------------------------------------------------
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(5000.0f, 0.0f, -70.0f));
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f));
 		staticShader.setMat4("model", model);
 		cubo.Draw(staticShader);
