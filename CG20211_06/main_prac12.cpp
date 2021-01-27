@@ -36,14 +36,9 @@
 #define FILENAME "resources/audio/TheSimpsons.wav"
 ALuint buffer, source;
 /*--------------------------------------------------------------------------*/
-
-
-//#pragma comment(lib, "winmm.lib")
-
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
-//void my_input(GLFWwindow *window);
 void my_input(GLFWwindow* window, int key, int scancode, int action, int mods);
 void animate(void);
 void getResolution(void);
@@ -61,10 +56,7 @@ float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true, dia = true;
 
-
-
 float dx_Homero = 0.08f, dz_Homero = 0.08f, giroHomero = 0.0f, mov_giro = 0.07f;
-
 
 // timing
 const int FPS = 60;
@@ -77,8 +69,6 @@ glm::vec3 lightPosition(0.0f, 0.0f, 0.0f);
 glm::vec3 lightDirection(0.2f, -1.0f, -0.2f);
 
 // posiciones
-//float x = 0.0f;
-//float y = 0.0f;
 float	movAuto_x = 0.0f,
 		movAuto_z = 0.0f,
 		orienta = 0.0f,
@@ -152,6 +142,10 @@ posCerZ = 0.0f,
 posCab = 0.0f,
 giroMonitoInc = 0.0f;
 
+//Animación día y noche
+float y = 0.0f, x = -1400.0f,dx = 0.0f;
+bool iniciar = false;
+
 #define MAX_FRAMES 196
 int i_max_steps = 2;
 int i_curr_steps = 0;
@@ -187,7 +181,6 @@ void saveFrame(void)
 	KeyFrame[FrameIndex].posX = posX;
 	KeyFrame[FrameIndex].posY = posY;
 	KeyFrame[FrameIndex].posZ = posZ;
-
 	KeyFrame[FrameIndex].rotRodIzq = rotRodIzq;
 	KeyFrame[FrameIndex].rotBraDer = rotBraDer;
 	KeyFrame[FrameIndex].rotBraIzq = rotBraIzq;
@@ -248,6 +241,18 @@ void interpolation(void)
 
 void animate(void)
 {
+	if (iniciar) {
+		if (x < 1400.0f) {
+			y = sqrt(pow(1400,2) - pow(x, 2));
+			x += 1.0;
+		}
+		else {
+			iniciar = false;
+			x = -1400.0f;
+			y = 0.0f;
+		}		
+	}
+
 	if (play)
 	{
 		if (i_curr_steps >= i_max_steps) //end of animation between frames?
@@ -256,7 +261,6 @@ void animate(void)
 			if (playIndex > FrameIndex - 2)	//end of total animation?
 			{
 				std::cout << "Animation ended" << std::endl;
-				//printf("termina anim\n");
 				playIndex = 0;
 				play = false;
 			}
@@ -294,7 +298,7 @@ void animate(void)
 	}
 
 	//Vehículo
-	if (animacion)
+	/*f (animacion)
 	{
 		if (recorrido1)
 		{
@@ -336,7 +340,7 @@ void animate(void)
 				recorrido1 = true;
 			}
 		}
-	}
+	}*/
 	//---------------Animacion globo-------------------
 	if (animGlobo) {
 		if (rec1) {
@@ -388,7 +392,7 @@ void animate(void)
 			}
 		}
 	}
-	//--------------------------Animacion pollo---------------
+	//--------------------------Animacion pollo------------------
 	if (360 > girpollo)
 		girpollo += 0.9f;
 	else
@@ -485,7 +489,6 @@ void getResolution()
 }
 int main()
 {
-	// glfw: initialize and configure
 	// ------------------------------
 	glfwInit();
 	/*glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -535,7 +538,6 @@ int main()
 	Shader skyboxShader("Shaders/skybox.vs", "Shaders/skybox.fs");				//--------------------Skybox shader
 	Shader animShader("Shaders/anim.vs", "Shaders/anim.fs");
 
-	
 	vector<std::string> faces												    //--------------------Skybox1
 	{
 		"resources/skybox/right.jpg",
@@ -2609,11 +2611,6 @@ int main()
 	KeyFrame[195].posCervezaY = -6;
 	KeyFrame[195].posCervezaZ = 0;
 	//---------TERMINAN KEYFRAMES HOMERO CERVEZA
-	// draw in wireframe
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
-	// render loop
-	// -----------
 
 	/*------------------------------OpenAL-------------------------------------*/
 	// OpenAL init
@@ -2645,7 +2642,8 @@ int main()
 
 	/*-------------------------------------------------------------------------*/
 
-
+	// render loop
+	// -----------
 	while (!glfwWindowShouldClose(window))
 	{
 
@@ -2669,12 +2667,6 @@ int main()
 		staticShader.use();
 		//Setup Advanced Lights
 
-		/*staticShader.setVec3("viewPos", camera.Position);
-		staticShader.setVec3("dirLight.direction", lightDirection);
-		staticShader.setVec3("dirLight.ambient", glm::vec3(0.2f, 0.2f, 0.2f));
-		staticShader.setVec3("dirLight.diffuse", glm::vec3(1.0f, 1.0f, 1.0f));
-		staticShader.setVec3("dirLight.specular", glm::vec3(0.0f, 0.0f, 0.0f));
-		*/
 		if (dia) {
 			staticShader.setVec3("dirLight.direction", lightDirection);
 			staticShader.setVec3("dirLight.ambient", glm::vec3(0.2f, 0.2f, 0.2f));
@@ -2813,8 +2805,8 @@ int main()
 		// Homero
 		// -------------------------------------------------------------------------------------------------------------------------
 		
-		model = glm::rotate(glm::mat4(1.0f), glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::translate(model, glm::vec3(-190.0f + homero_x, 6.0f, 410.0f + homero_z));
+		//model = glm::rotate(glm::mat4(1.0f), glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(x, y, 0.0f));
 		model = glm::rotate(model, glm::radians(giroHomero), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f));
 		staticShader.setMat4("model", model);
@@ -2822,14 +2814,14 @@ int main()
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Carro
 		// -------------------------------------------------------------------------------------------------------------------------
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(lightPosition.x, lightPosition.y, lightPosition.z));
+		//model = glm::translate(glm::mat4(1.0f), glm::vec3(lightPosition.x, lightPosition.y, lightPosition.z));
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(-1400.0f + lightPosition.x, 0.0f + lightPosition.y, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f));
 		staticShader.setMat4("model", model);
 		LUZ.Draw(staticShader);
 		
 		//Homero
 		//---------------------------------------------------------------
-
 		model = glm::translate(glm::mat4(1.0f), glm::vec3(0, 12.0f, -150.0f));
 		model = glm::translate(model, glm::vec3(posX, posY, posZ));
 		model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
@@ -3054,6 +3046,7 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 	if (key == GLFW_KEY_SPACE && action == GLFW_PRESS) {
 		animacion ^= true;
 		dia = false;
+		iniciar = true;
 	}
 
 	//To play KeyFrame animation 
