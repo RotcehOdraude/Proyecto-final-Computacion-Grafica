@@ -133,6 +133,8 @@
     <ClCompile Include="main_prac12.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="shaders\shader.fs" />
+    <None Include="shaders\shader.vs" />
     <None Include="shaders\shader_Lights.fs" />
     <None Include="shaders\shader_Lights.vs" />
     <None Include="shaders\skybox.fs" />

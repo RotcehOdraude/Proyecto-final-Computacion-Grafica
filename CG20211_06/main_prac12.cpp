@@ -53,6 +53,7 @@ int SCR_WIDTH = 800;
 int SCR_HEIGHT = 600;
 
 GLFWmonitor *monitors;
+GLuint VBO, VAO, EBO;
 
 // camera
 Camera camera(glm::vec3(-28.50f, 102.00f, 594.00f));
@@ -410,6 +411,75 @@ void getResolution()
 	lastY = SCR_HEIGHT / 2.0f;
 
 }
+
+void myData()
+{
+	GLfloat vertices[] = {
+		//Position				//Color
+		-0.5f, -0.5f, 0.5f,		1.0f, 0.0f, 0.0f,	//V0 - Frontal
+		0.5f, -0.5f, 0.5f,		1.0f, 0.0f, 0.0f,	//V1
+		0.5f, 0.5f, 0.5f,		1.0f, 0.0f, 0.0f,	//V5
+		-0.5f, 0.5f, 0.5f,		1.0f, 0.0f, 0.0f,	//V4
+
+		0.5f, -0.5f, -0.5f,		1.0f, 1.0f, 0.0f,	//V2 - Trasera
+		-0.5f, -0.5f, -0.5f,	1.0f, 1.0f, 0.0f,	//V3
+		-0.5f, 0.5f, -0.5f,		1.0f, 1.0f, 0.0f,	//V7
+		0.5f, 0.5f, -0.5f,		1.0f, 1.0f, 0.0f,	//V6
+
+		-0.5f, 0.5f, 0.5f,		0.0f, 0.0f, 1.0f,	//V4 - Izq
+		-0.5f, 0.5f, -0.5f,		0.0f, 0.0f, 1.0f,	//V7
+		-0.5f, -0.5f, -0.5f,	0.0f, 0.0f, 1.0f,	//V3
+		-0.5f, -0.5f, 0.5f,		0.0f, 0.0f, 1.0f,	//V0
+
+		0.5f, 0.5f, 0.5f,		0.0f, 1.0f, 0.0f,	//V5 - Der
+		0.5f, -0.5f, 0.5f,		0.0f, 1.0f, 0.0f,	//V1
+		0.5f, -0.5f, -0.5f,		0.0f, 1.0f, 0.0f,	//V2
+		0.5f, 0.5f, -0.5f,		0.0f, 1.0f, 0.0f,	//V6
+
+		-0.5f, 0.5f, 0.5f,		1.0f, 0.0f, 1.0f,	//V4 - Sup
+		0.5f, 0.5f, 0.5f,		1.0f, 0.0f, 1.0f,	//V5
+		0.5f, 0.5f, -0.5f,		1.0f, 0.0f, 1.0f,	//V6
+		-0.5f, 0.5f, -0.5f,		1.0f, 0.0f, 1.0f,	//V7
+
+		-0.5f, -0.5f, 0.5f,		1.0f, 1.0f, 1.0f,	//V0 - Inf
+		-0.5f, -0.5f, -0.5f,	1.0f, 1.0f, 1.0f,	//V3
+		0.5f, -0.5f, -0.5f,		1.0f, 1.0f, 1.0f,	//V2
+		0.5f, -0.5f, 0.5f,		1.0f, 1.0f, 1.0f,	//V1
+	};
+
+	unsigned int indices[] =	//I am not using index for this session
+	{
+		0
+	};
+
+	glGenVertexArrays(1, &VAO);
+	glBindVertexArray(VAO);
+
+	glGenBuffers(1, &VBO);
+
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	// position attribute
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+	// color attribute
+	//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+	//glEnableVertexAttribArray(1);
+
+	//Para trabajar con indices (Element Buffer Object)
+	glGenBuffers(1, &EBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	glBindVertexArray(0);
+
+}
+
+
+
 int main()
 {
 	// glfw: initialize and configure
@@ -683,6 +753,12 @@ int main()
 
 		staticShader.setFloat("material_shininess", 32.0f);
 
+		
+		glm::mat4 modelTemp = glm::mat4(1.0f);		// Una matriz temporal
+		glm::mat4 modelTemp2 = glm::mat4(1.0f);		// Una matriz temporal
+		glm::mat4 modelTemp3 = glm::mat4(1.0f);		// Una matriz temporal
+		glm::mat4 modelTemp4 = glm::mat4(1.0f);		// Una matriz temporal
+
 		glm::mat4 model = glm::mat4(1.0f);
 		glm::mat4 tmp = glm::mat4(1.0f);
 		// view/projection transformations
@@ -758,6 +834,225 @@ int main()
 		model = glm::scale(model, glm::vec3(5.0f));
 		staticShader.setMat4("model", model);
 		LUZ.Draw(staticShader);
+
+		//
+		glBindVertexArray(VAO);
+		//Colocar código aquí
+
+		model = glm::scale(model, glm::vec3(5.0f, 4.0f, 1.0f));
+		staticShader.setMat4("model", model);
+		staticShader.setVec3("aColor", glm::vec3(0.55f, 0.10f, 0.20f)); //Amarillo
+		glDrawArrays(GL_QUADS, 0, 24); //Pecho
+
+		modelTemp = model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 2.25f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.0f, 0.5f, 1.0f));
+		staticShader.setMat4("model", model);
+		staticShader.setVec3("aColor", glm::vec3(1.0f, 0.8f, 0.75f)); //Verde
+		glDrawArrays(GL_QUADS, 0, 24); //Cuello
+
+		model = glm::translate(modelTemp, glm::vec3(0.0f, 1.75f, 0.0f));
+		model = glm::scale(model, glm::vec3(2.0f, 3.0f, 1.0f));
+		staticShader.setMat4("model", model);
+		staticShader.setVec3("aColor", glm::vec3(0.9f, 0.74f, 0.62f)); //Rojo
+		glDrawArrays(GL_QUADS, 0, 24); //Cabeza
+
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(-3.5f, 1.5f, 0.0f));
+		model = glm::scale(model, glm::vec3(2.0f, 1.0f, 1.0f));
+		staticShader.setMat4("model", model);
+		staticShader.setVec3("aColor", glm::vec3(0.55f, 0.10f, 0.20f)); //Morado
+		glDrawArrays(GL_QUADS, 0, 24); //Hombro izquierdo
+
+		model = glm::translate(model, glm::vec3(3.5f, 0.0f, 0.0f));
+		//model = glm::scale(model, glm::vec3(2.0f, 1.0f, 1.0f));
+		staticShader.setMat4("model", model);
+		staticShader.setVec3("aColor", glm::vec3(0.55f, 0.10f, 0.20f)); //Morado
+		glDrawArrays(GL_QUADS, 0, 24); //Hombro derecho
+
+		modelTemp = model = glm::translate(glm::mat4(1), glm::vec3(4.0f, -.75f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.0f, 3.5f, 1.0f));
+		staticShader.setMat4("model", model);
+		staticShader.setVec3("aColor", glm::vec3(1.0f, 0.8f, 0.75f)); //Blanco
+		glDrawArrays(GL_QUADS, 0, 24); //Brazo derecho
+
+		model = glm::translate(model, glm::vec3(-8.0f, 0.0f, 0.0f));
+		//model = glm::scale(model, glm::vec3(2.0f, 1.0f, 1.0f));
+		staticShader.setMat4("model", model);
+		staticShader.setVec3("aColor", glm::vec3(1.0f, 0.8f, 0.75f)); //Blanco
+		glDrawArrays(GL_QUADS, 0, 24); //Brazo izquierdo
+
+		model = glm::translate(glm::mat4(1), glm::vec3(0.0f, -2.5f, 0.0f));
+		model = glm::scale(model, glm::vec3(5.0f, 1.0f, 1.0f));
+		staticShader.setMat4("model", model);
+		staticShader.setVec3("aColor", glm::vec3(0.25f, 0.25f, 0.25f)); //Blanco
+		glDrawArrays(GL_QUADS, 0, 24); //Cintura
+
+		model = glm::translate(glm::mat4(1), glm::vec3(-1.75f, -5.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.5f, 4.0f, 1.0f));
+		staticShader.setMat4("model", model);
+		staticShader.setVec3("aColor", glm::vec3(0.2f, 0.2f, 0.2f)); //Amarillo
+		glDrawArrays(GL_QUADS, 0, 24); //Pierna izquierda
+
+		modelTemp2 = model = glm::translate(glm::mat4(1), glm::vec3(1.75f, -5.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.5f, 4.0f, 1.0f));
+		staticShader.setMat4("model", model);
+		staticShader.setVec3("aColor", glm::vec3(0.2f, 0.2f, 0.2f)); //Amarillo
+		glDrawArrays(GL_QUADS, 0, 24); //Pierna derecha
+
+		model = glm::translate(modelTemp2, glm::vec3(0.5f, -2.75f, 0.0f));
+		model = glm::scale(model, glm::vec3(2.5f, 1.5f, 1.0f));
+		staticShader.setMat4("model", model);
+		staticShader.setVec3("aColor", glm::vec3(0.95f, 0.95f, 0.95f)); //Rojo
+		glDrawArrays(GL_QUADS, 0, 24); //Pie derecho
+
+		model = glm::translate(model, glm::vec3(-1.8f, 0.0f, 0.0f));
+		//model = glm::scale(model, glm::vec3(2.5f, 1.5f, 1.0f));
+		staticShader.setMat4("model", model);
+		staticShader.setVec3("aColor", glm::vec3(0.95f, 0.95f, 0.95f)); //Rojo
+		glDrawArrays(GL_QUADS, 0, 24); //Pie izquierdo
+
+		modelTemp = model = glm::translate(modelTemp, glm::vec3(0.25f, -2.125f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.5f, 0.75f, 1.0f));
+		staticShader.setMat4("model", model);
+		staticShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 1.0f)); //Azul
+		glDrawArrays(GL_QUADS, 0, 24); //Mano derecha
+
+		modelTemp = model = glm::translate(modelTemp, glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(0.5f, 1.0f, 1.0f));
+		staticShader.setMat4("model", model);
+		staticShader.setVec3("aColor", glm::vec3(0.0f, 0.5f, 1.0f)); //Azul
+		glDrawArrays(GL_QUADS, 0, 24); //Mango derecho
+
+		modelTemp = model = glm::translate(modelTemp, glm::vec3(1.75f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(3.0f, 0.75f, 1.0f));
+		staticShader.setMat4("model", model);
+		staticShader.setVec3("aColor", glm::vec3(0.0f, 0.25f, 1.0f)); //Azul
+		glDrawArrays(GL_QUADS, 0, 24); //Espada derecho
+
+		modelTemp3 = model = glm::translate(glm::mat4(1), glm::vec3(-8.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 2.25f));
+		staticShader.setMat4("model", model);
+		staticShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f)); //Roja
+		glDrawArrays(GL_QUADS, 0, 24); //Cresta roja
+
+		model = glm::translate(modelTemp3, glm::vec3(0.0f, -3.65f, 0.0f));
+		model = glm::scale(model, glm::vec3(3.0f, 6.25f, 3.0f));
+		staticShader.setMat4("model", model);
+		staticShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f)); //Blanco
+		glDrawArrays(GL_QUADS, 0, 24); //Tronco
+
+		modelTemp4 = model = glm::translate(modelTemp3, glm::vec3(0.0f, -1.75f, 2.25f));
+		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.5f));
+		staticShader.setMat4("model", model);
+		staticShader.setVec3("aColor", glm::vec3(1.0f, 0.4f, 0.07f)); //Naranja
+		glDrawArrays(GL_QUADS, 0, 24); //Pico
+
+		model = glm::translate(model, glm::vec3(0.0f, -1.0f, -0.24f));
+		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+		staticShader.setMat4("model", model);
+		staticShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f)); //Rojo
+		glDrawArrays(GL_QUADS, 0, 24); //Pico bajo
+
+		model = glm::translate(modelTemp3, glm::vec3(0.0f, -5.15f, -2.35f));
+		model = glm::scale(model, glm::vec3(3.0f, 3.25f, 1.75f));
+		staticShader.setMat4("model", model);
+		staticShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f)); //Blanco
+		glDrawArrays(GL_QUADS, 0, 24); //cola grande
+
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, -0.67f));
+		model = glm::scale(model, glm::vec3(0.75f, 1.0f, 0.40f));
+		staticShader.setMat4("model", model);
+		staticShader.setVec3("aColor", glm::vec3(0.9f, 0.9f, 0.9f)); //Blanco
+		glDrawArrays(GL_QUADS, 0, 24); //cola chica
+
+		model = glm::translate(modelTemp3, glm::vec3(-1.75f, -4.75f, -1.0f));
+		model = glm::scale(model, glm::vec3(0.75f, 1.25f, 2.75f));
+		staticShader.setMat4("model", model);
+		staticShader.setVec3("aColor", glm::vec3(0.9f, 0.9f, 0.9f)); //Blanco
+		glDrawArrays(GL_QUADS, 0, 24); //ala izquierda
+
+		model = glm::translate(model, glm::vec3(4.75f, 0.0f, 0.0f));
+		//model = glm::scale(model, glm::vec3(0.75f, 1.25f, 2.75f));
+		staticShader.setMat4("model", model);
+		staticShader.setVec3("aColor", glm::vec3(0.9f, 0.9f, 0.9f)); //Blanco
+		glDrawArrays(GL_QUADS, 0, 24); //ala derecha
+
+		model = glm::translate(modelTemp4, glm::vec3(-1.51f, 0.2f, -2.0f));
+		model = glm::scale(model, glm::vec3(0.0f, .5f, 0.5f));
+		staticShader.setMat4("model", model);
+		staticShader.setVec3("aColor", glm::vec3(0.1f, 0.1f, 0.1f)); //Negro
+		glDrawArrays(GL_QUADS, 0, 24); //ojo izquierdo
+
+		model = glm::translate(modelTemp4, glm::vec3(1.51f, 0.2f, -2.0f));
+		model = glm::scale(model, glm::vec3(0.0f, .5f, 0.5f));
+		staticShader.setMat4("model", model);
+		staticShader.setVec3("aColor", glm::vec3(0.1f, 0.1f, 0.1f)); //Negro
+		glDrawArrays(GL_QUADS, 0, 24); //ojo derecho
+
+		model = glm::translate(modelTemp4, glm::vec3(-1.0f, -5.75f, -3.0f));
+		model = glm::scale(model, glm::vec3(0.5f, 1.5f, 0.5f));
+		staticShader.setMat4("model", model);
+		staticShader.setVec3("aColor", glm::vec3(1.0f, 0.4f, 0.07f)); //Naranja
+		glDrawArrays(GL_QUADS, 0, 24); //pierna izquierda
+
+		model = glm::translate(modelTemp4, glm::vec3(1.0f, -5.75f, -3.0f));
+		model = glm::scale(model, glm::vec3(0.5f, 1.5f, 0.5f));
+		staticShader.setMat4("model", model);
+		staticShader.setVec3("aColor", glm::vec3(1.0f, 0.4f, 0.07f)); //Naranja
+		glDrawArrays(GL_QUADS, 0, 24); //pierna derecha
+
+		model = glm::translate(modelTemp4, glm::vec3(-1.0f, -6.75f, -3.0f));
+		model = glm::scale(model, glm::vec3(1.5f, 0.5f, 1.0f));
+		staticShader.setMat4("model", model);
+		staticShader.setVec3("aColor", glm::vec3(1.0f, 0.4f, 0.07f)); //Naranja
+		glDrawArrays(GL_QUADS, 0, 24); //pie izquierda
+
+		model = glm::translate(modelTemp4, glm::vec3(1.0f, -6.75f, -3.0f));
+		model = glm::scale(model, glm::vec3(1.5f, 0.5f, 1.0f));
+		staticShader.setMat4("model", model);
+		staticShader.setVec3("aColor", glm::vec3(1.0f, 0.4f, 0.07f)); //Naranja
+		glDrawArrays(GL_QUADS, 0, 24); //pie derecho
+
+		model = glm::translate(modelTemp4, glm::vec3(-1.5f, -6.75f, -2.125f));
+		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.75f));
+		staticShader.setMat4("model", model);
+		staticShader.setVec3("aColor", glm::vec3(1.0f, 0.5f, 0.06f)); //Naranja
+		glDrawArrays(GL_QUADS, 0, 24); //Dedos izquierda
+
+		model = glm::translate(modelTemp4, glm::vec3(-0.5f, -6.75f, -2.125f));
+		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.75f));
+		staticShader.setMat4("model", model);
+		staticShader.setVec3("aColor", glm::vec3(1.0f, 0.5f, 0.06f)); //Naranja
+		glDrawArrays(GL_QUADS, 0, 24); //Dedos izquierda
+
+		model = glm::translate(modelTemp4, glm::vec3(1.5f, -6.75f, -2.125f));
+		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.75f));
+		staticShader.setMat4("model", model);
+		staticShader.setVec3("aColor", glm::vec3(1.0f, 0.5f, 0.06f)); //Naranja
+		glDrawArrays(GL_QUADS, 0, 24); //Dedos derecha
+
+		model = glm::translate(modelTemp4, glm::vec3(0.5f, -6.75f, -2.125f));
+		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.75f));
+		staticShader.setMat4("model", model);
+		staticShader.setVec3("aColor", glm::vec3(1.0f, 0.5f, 0.06f)); //Naranja
+		glDrawArrays(GL_QUADS, 0, 24); //Dedos derecha
+
+		/*
+		modelTemp = glm::translate(model, glm::vec3(3.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(3.5f, 2.0f, 1.0f)); /* factorDeEscala = valorFinal/valor inicial //Siempre al final del objeto por el
+		staticShader.setMat4("model", model);
+		staticShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+		glDrawArrays(GL_QUADS, 0, 24); //B
+
+		model = glm::translate(modelTemp/*glm::mat4(1.0f)/*Ignora a la matriz model y comienza desde la unitaria, glm::vec3(-3.0f, 4.5f, 0.0f));
+		staticShader.setMat4("model", model);
+		staticShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 0.0f));
+		glDrawArrays(GL_QUADS, 0, 24); //C
+
+
+		*/
+
+		glBindVertexArray(0);
+		
 		
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Personaje
@@ -915,31 +1210,7 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 		camera.ProcessKeyboard(LEFT, (float)deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		camera.ProcessKeyboard(RIGHT, (float)deltaTime);
-	//Ligth
-	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
-		lightDirection.x += 0.5f;
-		printf("(%.2f,%.2f,%.2f)\n", lightPosition.x, lightPosition.y, lightPosition.z);
-	}
-	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
-		lightDirection.x -= 0.5f;
-		printf("(%.2f,%.2f,%.2f)\n", lightPosition.x, lightPosition.y, lightPosition.z);
-	}
-	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
-		lightPosition.y += 1.5f;
-		printf("(%.2f,%.2f,%.2f)\n", lightPosition.x, lightPosition.y, lightPosition.z);
-	}
-	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
-		lightPosition.y -= 1.5f;
-		printf("(%.2f,%.2f,%.2f)\n", lightPosition.x, lightPosition.y, lightPosition.z);
-	}
-	if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS) {
-		lightPosition.z += 1.5f;
-		printf("(%.2f,%.2f,%.2f)\n", lightPosition.x, lightPosition.y, lightPosition.z);
-	}
-	if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS) {
-		lightPosition.z -= 1.5f;
-		printf("(%.2f,%.2f,%.2f)\n", lightPosition.x, lightPosition.y, lightPosition.z);
-	}
+	
 		
 	//To Configure Model
 	if (glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS)
