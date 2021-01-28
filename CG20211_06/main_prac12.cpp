@@ -687,7 +687,7 @@ int main()
 	//
 	Model casaVieja("resources/objects/Escenario2/Escenario.obj");
 	Model cubo("resources/objects/cubo/cube02.obj");
-	Model LUZ("resources/objects/LUZ/LUZ.obj");
+	//Model LUZ("resources/objects/LUZ/LUZ.obj");
 	Model homeroDona("resources/objects/HomeroAlberca/HomeroALow.obj");
 
 	//Modelos jardin
@@ -698,7 +698,7 @@ int main()
 	Model cerveza("resources/objects/cerveza/cerveza.obj");
 
 	//Modelo aspiradora
-	Model aspiradora("resources/objects/cleaner/cleaner.obj");
+	//Model aspiradora("resources/objects/cleaner/cleaner.obj");
 
 	//homeroAnimate keyframes
 	Model cabeza1("resources/objects/homero/cabeza1.obj");
@@ -2943,10 +2943,10 @@ int main()
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Carro
 		// -------------------------------------------------------------------------------------------------------------------------
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(lightPosition.x, lightPosition.y, lightPosition.z));
+		/*model = glm::translate(glm::mat4(1.0f), glm::vec3(lightPosition.x, lightPosition.y, lightPosition.z));
 		model = glm::scale(model, glm::vec3(5.0f));
 		staticShader.setMat4("model", model);
-		LUZ.Draw(staticShader);
+		LUZ.Draw(staticShader);*/
 
 		//
 		//Colocar código aquí
@@ -3280,13 +3280,13 @@ int main()
 
 
 		//Aspiradora//
-		model = glm::mat4(1.0f);
+		/*model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(80.0, 4.5, 70.0));//$$$$$$$$$$$$$$$$$$$$$$$$$$ Posicion inicial de el lambo
 		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0)); //$$$$$$$$$$$$$$$$$$$$$$$$$$ giro modelo en funcion del teclado
 		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 0.0f, 1.0));
 		model = glm::scale(model, glm::vec3(3));
 		staticShader.setMat4("model", model);
-		aspiradora.Draw(staticShader);
+		aspiradora.Draw(staticShader);*/
 
 		//UFO//
 		model = glm::mat4(1.0f);
