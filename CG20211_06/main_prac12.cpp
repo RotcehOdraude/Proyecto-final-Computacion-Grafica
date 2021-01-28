@@ -60,7 +60,7 @@ Camera camera(glm::vec3(-28.50f, 102.00f, 594.00f));
 float MovementSpeed = 0.2f; //Velocidad de la camara
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
-bool firstMouse = true;
+bool firstMouse = true, dia = true;
 
 
 
@@ -224,6 +224,13 @@ void resetElements(void)
 
 	rotRodIzq = KeyFrame[0].rotRodIzq;
 	giroMonito = KeyFrame[0].giroMonito;
+	rotBder = KeyFrame[0].rotBraDer;
+
+	//Posición de la cerveza
+	posCerX = KeyFrame[0].posCervezaX;
+	posCerY = KeyFrame[0].posCervezaY;
+	posCerZ = KeyFrame[0].posCervezaZ;
+	rotCer = KeyFrame[0].rotCerveza;
 }
 
 void interpolation(void)
@@ -643,12 +650,11 @@ int main()
 	// -------------------------
 	//Shader staticShader("Shaders/lightVertex.vs", "Shaders/lightFragment.fs");
 	Shader staticShader("Shaders/shader_Lights.vs", "Shaders/shader_Lights.fs");
-	Shader skyboxShader("Shaders/skybox.vs", "Shaders/skybox.fs");
+	Shader skyboxShader("Shaders/skybox.vs", "Shaders/skybox.fs");				//--------------------Skybox shader
 	Shader animShader("Shaders/anim.vs", "Shaders/anim.fs");
-	//Shader secondShader("Shaders/shader.vs","Shaders/shader.fs");
 
 	
-	vector<std::string> faces
+	vector<std::string> faces												    //--------------------Skybox1
 	{
 		"resources/skybox/right.jpg",
 		"resources/skybox/left.jpg",
@@ -658,12 +664,22 @@ int main()
 		"resources/skybox/back.jpg"
 	};
 
-	Skybox skybox = Skybox(faces);
+	vector<std::string> faces2												    //--------------------Skybox1
+	{
+		"resources/skybox2/right2.jpg",
+		"resources/skybox2/left2.jpg",
+		"resources/skybox2/top2.jpg",
+		"resources/skybox2/bottom2.jpg",
+		"resources/skybox2/front2.jpg",
+		"resources/skybox2/back2.jpg"
+	};
 
+	Skybox skybox = Skybox(faces);												//--------------------Skybox1
+	Skybox skybox2 = Skybox(faces2);
 	// Shader configuration
 	// --------------------
 	skyboxShader.use();
-	skyboxShader.setInt("skybox", 0);
+	skyboxShader.setInt("skybox", 0);											//--------------------Skybox shader
 
 	// load models
 	// -----------Homero
@@ -700,12 +716,6 @@ int main()
 
 	//Modelo UFO
 	Model ufo("resources/objects/UFO/Low_poly_UFO.obj");
-
-	//ModelAnim animacionPersonaje("resources/objects/Personaje1/PersonajeBrazo.dae");
-	//animacionPersonaje.initShaders(animShader.ID);
-
-	//ModelAnim ninja("resources/objects/Dying/Dying.dae");
-	//ninja.initShaders(animShader.ID);
 
 	//Inicialización de KeyFrames
 	/*for (int i = 0; i < MAX_FRAMES; i++)
@@ -2724,6 +2734,7 @@ int main()
 
 	// render loop
 	// -----------
+
 	/*------------------------------OpenAL-------------------------------------*/
 	// OpenAL init
 
@@ -2777,11 +2788,26 @@ int main()
 		// don't forget to enable shader before setting uniforms
 		staticShader.use();
 		//Setup Advanced Lights
-		staticShader.setVec3("viewPos", camera.Position);
+
+		/*staticShader.setVec3("viewPos", camera.Position);
 		staticShader.setVec3("dirLight.direction", lightDirection);
 		staticShader.setVec3("dirLight.ambient", glm::vec3(0.2f, 0.2f, 0.2f));
 		staticShader.setVec3("dirLight.diffuse", glm::vec3(1.0f, 1.0f, 1.0f));
 		staticShader.setVec3("dirLight.specular", glm::vec3(0.0f, 0.0f, 0.0f));
+		*/
+		if (dia) {
+			staticShader.setVec3("dirLight.direction", lightDirection);
+			staticShader.setVec3("dirLight.ambient", glm::vec3(0.2f, 0.2f, 0.2f));
+			staticShader.setVec3("dirLight.diffuse", glm::vec3(1.0f, 1.0f, 1.0f));
+			staticShader.setVec3("dirLight.specular", glm::vec3(0.0f, 0.0f, 0.0f));
+		}
+		else
+		{
+			staticShader.setVec3("dirLight.direction", lightDirection);
+			staticShader.setVec3("dirLight.ambient", glm::vec3(0.2f, 0.2f, 0.2f));
+			staticShader.setVec3("dirLight.diffuse", glm::vec3(0.0f, 0.0f, 1.0f));
+			staticShader.setVec3("dirLight.specular", glm::vec3(0.0f, 0.0f, 0.0f));
+		}
 		//staticShader.setVec3("dirLight.ambient", glm::vec3(0.0f, 0.0f, 0.0f));
 		//staticShader.setVec3("dirLight.diffuse", glm::vec3(0.0f, 0.0f, 0.0f));
 		//staticShader.setVec3("dirLight.specular", glm::vec3(0.0f, 0.0f, 0.0f));
@@ -2899,40 +2925,6 @@ int main()
 		glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f);
 		glm::vec3 ambientColor = diffuseColor * glm::vec3(0.75f);
 		
-
-		// -------------------------------------------------------------------------------------------------------------------------
-		// Personaje Animacion
-		// -------------------------------------------------------------------------------------------------------------------------
-		//Remember to activate the shader with the animation
-		//animShader.use();
-		//animShader.setMat4("projection", projection);
-		//animShader.setMat4("view", view);
-		//
-		//animShader.setVec3("material.specular", glm::vec3(0.5f));
-		//animShader.setFloat("material.shininess", 32.0f);
-		//animShader.setVec3("light.ambient", ambientColor);
-		//animShader.setVec3("light.diffuse", diffuseColor);
-		//animShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
-		//animShader.setVec3("light.direction", lightDirection);
-		//animShader.setVec3("viewPos", camera.Position);
-		//
-		//model = glm::translate(glm::mat4(1.0f), glm::vec3(-40.3f, 1.75f, 0.3f)); // translate it down so it's at the center of the scene
-		//model = glm::scale(model, glm::vec3(1.2f));	// it's a bit too big for our scene, so scale it down
-		//model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		//animShader.setMat4("model", model);
-		//animacionPersonaje.Draw(animShader);
-
-		// -------------------------------------------------------------------------------------------------------------------------
-		// Segundo Personaje Animacion
-		// -------------------------------------------------------------------------------------------------------------------------
-
-		//model = glm::translate(glm::mat4(1.0f), glm::vec3(40.3f, 1.75f, 0.3f)); // translate it down so it's at the center of the scene
-		//model = glm::scale(model, glm::vec3(0.5f));	// it's a bit too big for our scene, so scale it down
-		//model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		//animShader.setMat4("model", model);
-		//ninja.Draw(animShader);
-
-		// -------------------------------------------------------------------------------------------------------------------------
 		// Escenario
 		// -------------------------------------------------------------------------------------------------------------------------
 		staticShader.use();
@@ -3185,62 +3177,6 @@ int main()
 
 		glBindVertexArray(0);
 		
-		
-		// -------------------------------------------------------------------------------------------------------------------------
-		// Personaje
-		// -------------------------------------------------------------------------------------------------------------------------
-		//model = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0));
-		//model = glm::scale(model, glm::vec3(5.0f));
-		//model = glm::translate(model, glm::vec3(posX, posY, posZ));
-		//tmp = model = glm::rotate(model, glm::radians(giroMonito), glm::vec3(0.0f, 1.0f, 0.0));
-		//staticShader.setMat4("model", model);
-		//torso.Draw(staticShader);
-		//
-		////Pierna Der
-		//model = glm::translate(tmp, glm::vec3(-0.5f, 0.0f, -0.1f));
-		//model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
-		//model = glm::rotate(model, glm::radians(-rotRodIzq), glm::vec3(1.0f, 0.0f, 0.0f));
-		//staticShader.setMat4("model", model);
-		//piernaDer.Draw(staticShader);
-		//
-		////Pie Der
-		//model = glm::translate(model, glm::vec3(0, -0.9f, -0.2f));
-		//staticShader.setMat4("model", model);
-		//botaDer.Draw(staticShader);
-		//
-		////Pierna Izq
-		//model = glm::translate(tmp, glm::vec3(0.5f, 0.0f, -0.1f));
-		//model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		//staticShader.setMat4("model", model);
-		//piernaIzq.Draw(staticShader);
-		//
-		////Pie Iz
-		//model = glm::translate(model, glm::vec3(0, -0.9f, -0.2f));
-		//staticShader.setMat4("model", model);
-		//botaDer.Draw(staticShader);	//Izq trase
-		//
-		////Brazo derecho
-		//model = glm::translate(tmp, glm::vec3(0.0f, -1.0f, 0.0f));
-		//model = glm::translate(model, glm::vec3(-0.75f, 2.5f, 0));
-		//model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		//staticShader.setMat4("model", model);
-		//brazoDer.Draw(staticShader);
-		//
-		////Brazo izquierdo
-		//model = glm::translate(tmp, glm::vec3(0.0f, -1.0f, 0.0f));
-		//model = glm::translate(model, glm::vec3(0.75f, 2.5f, 0));
-		//model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-		//staticShader.setMat4("model", model);
-		//brazoIzq.Draw(staticShader);
-		//
-		////Cabeza
-		//model = glm::translate(tmp, glm::vec3(0.0f, -1.0f, 0.0f));
-		//model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
-		//model = glm::translate(model, glm::vec3(0.0f, 2.5f, 0));
-		//staticShader.setMat4("model", model);
-		//cabeza.Draw(staticShader);
-
-		//---------------------------------------------------------------
 		//Homero
 		//---------------------------------------------------------------
 
@@ -3374,9 +3310,15 @@ int main()
 		//-------------------------------------------------------------------------------------
 		// draw skybox as last
 		// -------------------
-		skyboxShader.use();
-		skybox.Draw(skyboxShader, view, projection, camera);
-
+		if (dia) {
+			skyboxShader.use();
+			skybox.Draw(skyboxShader, view, projection, camera);
+		}
+		else {
+			skyboxShader.use();
+			skybox2.Draw(skyboxShader, view, projection, camera);
+		}
+		
 		// Limitar el framerate a 60
 		deltaTime = SDL_GetTicks() - lastFrame; // time for full 1 loop
 		//std::cout <<"frame time = " << frameTime << " milli sec"<< std::endl;
@@ -3390,8 +3332,6 @@ int main()
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
-
-
 
 
 	skybox.Terminate();
@@ -3444,13 +3384,13 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 		giroMonito++;
 
 	//Car animation
-	if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
+	if (key == GLFW_KEY_SPACE && action == GLFW_PRESS) {
 		animacion ^= true;
+		dia = false;
+	}
 
 	if (key == GLFW_KEY_U && action == GLFW_PRESS)
 		animOvni ^= true;
-
-
 	//To play KeyFrame animation 
 	if (key == GLFW_KEY_P && action == GLFW_PRESS)
 	{
