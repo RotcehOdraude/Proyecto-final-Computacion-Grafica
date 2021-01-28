@@ -1,5 +1,5 @@
-# Blender MTL File: 'None'
-# Material Count: 94
+# Blender MTL File: 'EscenarioRescatado.blend'
+# Material Count: 95
 
 newmtl 02Default
 Ns 14.620545
@@ -123,7 +123,7 @@ d 1.000000
 illum 2
 map_Kd morado.png
 
-newmtl Material.001
+newmtl Material.003
 Ns 225.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.800000 0.800000 0.800000
@@ -132,18 +132,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd 4_browns.jpg
-
-newmtl Material.002
-Ns 225.000000
-Ka 1.000000 1.000000 1.000000
-Kd 0.000000 0.233850 0.800000
-Ks 0.500000 0.500000 0.500000
-Ke 0.000000 0.000000 0.000000
-Ni 1.450000
-d 1.000000
-illum 2
-map_Kd azul_rey.jpg
+map_Kd 44.jpg
 
 newmtl Material.004
 Ns 179.999996
@@ -165,17 +154,6 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-
-newmtl Material.007
-Ns 225.000000
-Ka 1.000000 1.000000 1.000000
-Kd 0.800000 0.800000 0.800000
-Ks 0.500000 0.500000 0.500000
-Ke 0.000000 0.000000 0.000000
-Ni 1.450000
-d 1.000000
-illum 2
-map_Kd 44.jpg
 
 newmtl Material_001
 Ns 179.999996
@@ -275,7 +253,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd color_rosa.jpg
+map_Kd morado.png
 
 newmtl Material__74
 Ns 179.999996
@@ -458,6 +436,39 @@ Ni 1.450000
 d 1.000000
 illum 2
 map_Kd white.jpg
+
+newmtl TexturaBanio
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd textura_bano.jpg
+
+newmtl TexturaCocina
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd textura_cocina.jpg
+
+newmtl TexturaParedRosa
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd textura_pared_rosa.jpg
 
 newmtl Verde
 Ns 9.926819

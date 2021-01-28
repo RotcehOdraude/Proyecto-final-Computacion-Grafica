@@ -35,5 +35,11 @@
     <None Include="shaders\skybox.vs">
       <Filter>Archivos de recursos</Filter>
     </None>
+    <None Include="shaders\shader.fs">
+      <Filter>Archivos de recursos</Filter>
+    </None>
+    <None Include="shaders\shader.vs">
+      <Filter>Archivos de recursos</Filter>
+    </None>
   </ItemGroup>
 </Project>
