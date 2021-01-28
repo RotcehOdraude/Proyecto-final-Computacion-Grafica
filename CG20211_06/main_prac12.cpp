@@ -37,9 +37,6 @@
 ALuint buffer, source;
 /*--------------------------------------------------------------------------*/
 
-
-//#pragma comment(lib, "winmm.lib")
-
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
@@ -121,9 +118,6 @@ animOvni = false,
 rec1UFO = true,
 rec2UFO = false,
 rec3UFO = false;
-
-
-
 
 //Keyframes (Manipulación y dibujo)
 float	posX = 0.0f,
@@ -2961,7 +2955,7 @@ int main()
 		//staticShader.setMat4("view", view);
 		//staticShader.setMat4("projection", projection);
 
-		glBindVertexArray(VAO);
+		/*glBindVertexArray(VAO);
 
 		model = glm::scale(model, glm::vec3(5.0f, 4.0f, 1.0f));
 		staticShader.setMat4("model", model);
@@ -3173,9 +3167,9 @@ int main()
 		glDrawArrays(GL_QUADS, 0, 24); //C
 
 
-		*/
+		
 
-		glBindVertexArray(0);
+		glBindVertexArray(0);*/
 		
 		//Homero
 		//---------------------------------------------------------------
@@ -3386,7 +3380,7 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 	//Car animation
 	if (key == GLFW_KEY_SPACE && action == GLFW_PRESS) {
 		animacion ^= true;
-		dia = false;
+		dia = not dia;
 	}
 
 	if (key == GLFW_KEY_U && action == GLFW_PRESS)
